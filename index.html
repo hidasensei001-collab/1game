@@ -477,39 +477,6 @@ header {
   background: var(--gold-light);
 }
 
-/* Memory Cards Grid */
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
-.mem-card {
-  aspect-ratio: 1;
-  border-radius: 16px;
-  background: var(--purple);
-  box-shadow: 0 4px 0 #6D28D9;
-  font-size: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-}
-
-.mem-card.flipped {
-  background: white;
-  border: 3px solid var(--purple);
-  box-shadow: none;
-  color: var(--text-main);
-}
-
-.mem-card.matched {
-  background: #DCFCE7;
-  border: 3px solid var(--emerald);
-  opacity: 0.7;
-}
-
 /* Encyclopedia & Catalog */
 .cat-chips {
   display: flex;
@@ -659,7 +626,7 @@ header {
         <div style="font-size: 56px;">🌙</div>
         <div class="logo-title">HIDA ISLAMIC</div>
         <div class="logo-sub">ADVENTURE</div>
-        <p style="color: #D1FAE5; font-size: 13px; margin-top: 6px;">"Belajar Islam, Bermain, dan Menjadi Anak Hebat!"</p>
+        <p style="color: #D1FAE5; font-size: 13px; margin-top: 6px;">"Belajar Islam, Bermain, dan Menjadi Anak Sholeh!"</p>
       </div>
 
       <div class="card" style="margin-top: 14px;">
@@ -805,20 +772,7 @@ header {
       </div>
     </section>
 
-    <!-- VIEW 5: MEMORY MATCH GAME -->
-    <section class="view" id="memoryView">
-      <div class="small-back" onclick="showHome()">← Kembali</div>
-      
-      <div class="card" style="padding: 12px;">
-        <div class="q-category" id="memCategoryBadge">Memory Game</div>
-        <div class="title-lg" style="font-size: 18px; margin-bottom: 10px;">Cari Pasangan Yang Sama!</div>
-        <div class="memory-grid" id="memoryGridContainer">
-          <!-- Dynamic memory cards -->
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 6: ENCYCLOPEDIA & COLLECTION -->
+    <!-- VIEW 5: ENCYCLOPEDIA & CATALOG -->
     <section class="view" id="encycloView">
       <div class="small-back" onclick="showHome()">← Kembali</div>
       <div class="title-lg" style="color: white;">📚 ENSIKLOPEDIA HIDA</div>
@@ -832,7 +786,7 @@ header {
       </div>
     </section>
 
-    <!-- VIEW 7: ACHIEVEMENTS -->
+    <!-- VIEW 6: ACHIEVEMENTS -->
     <section class="view" id="achieveView">
       <div class="small-back" onclick="showHome()">← Kembali</div>
       <div class="title-lg" style="color: white;">🏆 LENCANA PRESTASI</div>
@@ -843,7 +797,7 @@ header {
       </div>
     </section>
 
-    <!-- VIEW 8: PARENT PROGRESS DASHBOARD -->
+    <!-- VIEW 7: PARENT PROGRESS DASHBOARD -->
     <section class="view" id="parentView">
       <div class="small-back" onclick="showHome()">← Kembali</div>
       <div class="card">
@@ -897,7 +851,7 @@ header {
 
 <script>
 /* =========================================================
-   HIDA ISLAMIC ADVENTURE — GAME ENGINE & DATABASE
+   HIDA ISLAMIC ADVENTURE — GAME ENGINE & EXPANDED DATABASE
    ========================================================= */
 
 // 1. PLAYERS DATABASE
@@ -906,97 +860,118 @@ const PLAYERS = {
   fatih: { id: "fatih", fullName: "Muhammad Alfatih Hidayatullah", nick: "Alfatih", avatar: "👦" }
 };
 
-// 2. GAME AREAS DATA (ALL UNLOCKED)
+// 2. GAME AREAS DATA
 const DUNIA_HIDA_AREAS = [
   { id: "iman", title: "Kampung Iman", icon: "🕌", color: "#10B981", desc: "Rukun Islam & Rukun Iman" },
   { id: "quran", title: "Taman Al-Qur'an", icon: "📖", color: "#0EA5E9", desc: "Hijaiyah, Harakat & Tajwid" },
-  { id: "istana", title: "Istana Iman", icon: "🌟", color: "#8B5CF6", desc: "Mengenal Allah, Kitab & Rasul" },
-  { id: "ibadah", title: "Kota Ibadah", icon: "🕌", color: "#F59E0B", desc: "Wudhu, Shalat & Adab Masjid" },
+  { id: "istana", title: "Istana Iman", icon: "🌟", color: "#8B5CF6", desc: "Mengenal Allah, Kitab & Qada Qadar" },
+  { id: "ibadah", title: "Kota Ibadah", icon: "🕌", color: "#F59E0B", desc: "Wudhu, Shalat Fardhu & Adab" },
   { id: "ramadan", title: "Taman Ramadhan", icon: "🌙", color: "#14B8A6", desc: "Puasa, Sahur & Zakat Fitrah" },
   { id: "haji", title: "Jalan Menuju Baitullah", icon: "🕋", color: "#D97706", desc: "Haji, Umrah & Ka'bah" },
-  { id: "nabi", title: "Jejak Para Nabi", icon: "🌴", color: "#059669", desc: "25 Nabi & Rasul Allah" },
-  { id: "rasul", title: "Taman Rasulullah ﷺ", icon: "🌹", color: "#EC4899", desc: "Akhlak & Sunnah Nabi" },
+  { id: "nabi", title: "Jejak Para Nabi", icon: "🌴", color: "#059669", desc: "25 Nabi & Ulul Azmi" },
+  { id: "rasul", title: "Taman Rasulullah ﷺ", icon: "🌹", color: "#EC4899", desc: "Sifat & Sunnah Nabi" },
   { id: "malaikat", title: "Dunia Para Malaikat", icon: "👼", color: "#6366F1", desc: "10 Malaikat & Tugasnya" },
-  { id: "akhlak", title: "Taman Akhlak", icon: "❤️", color: "#F43F5E", desc: "Adab & Kebiasaan Baik" }
+  { id: "akhlak", title: "Taman Akhlak", icon: "❤️", color: "#F43F5E", desc: "Adab, Sopan Santun & Kebiasaan Baik" }
 ];
 
-// 3. ISLAMIC COMPREHENSIVE KNOWLEDGE DATABASE
+// 3. EXPANDED COMPREHENSIVE ISLAMIC KNOWLEDGE DATABASE
 const ISLAMIC_DATABASE = {
   // AREA 1: KAMPUNG IMAN
   iman: [
-    { id: "ki_1", type: "mc", q: "Berapa jumlah Rukun Islam yang wajib kita jalani?", options: ["3", "5", "6", "7"], ans: "5", fact: "Rukun Islam adalah lima amalan utama bagi setiap Muslim." },
-    { id: "ki_2", type: "mc", q: "Berapa jumlah Rukun Iman dalam agama Islam?", options: ["4", "5", "6", "10"], ans: "6", fact: "Rukun Iman adalah 6 pilar kepercayaan dalam Islam." },
-    { id: "ki_3", type: "mc", q: "Rukun Islam yang pertama adalah...", options: ["Shalat", "Mengucapkan Kalimat Syahadat", "Puasa", "Zakat"], ans: "Mengucapkan Kalimat Syahadat", fact: "Syahadat adalah persaksian bahwa tiada Tuhan selain Allah dan Nabi Muhammad adalah utusan Allah." },
-    { id: "ki_4", type: "mc", q: "Rukun Iman yang pertama adalah...", options: ["Iman kepada Malaikat", "Iman kepada Allah", "Iman kepada Kitab", "Iman kepada Rasul"], ans: "Iman kepada Allah", fact: "Kita meyakini bahwa Allah adalah Sang Pencipta alam semesta." },
-    { id: "ki_5", type: "seq", title: "Susun Urutan 5 Rukun Islam", items: ["1. Syahadat", "2. Shalat", "3. Zakat", "4. Puasa Ramadan", "5. Haji"], fact: "Rukun Islam tersusun berurutan mulai dari Syahadat hingga Haji." }
+    { id: "ki_1", type: "mc", q: "Berapa jumlah Rukun Islam yang wajib kita amalkan?", options: ["3", "5", "6", "7"], ans: "5", fact: "Rukun Islam adalah lima fondasi utama bagi setiap Muslim dalam beragama." },
+    { id: "ki_2", type: "mc", q: "Berapa jumlah Rukun Iman yang wajib diyakini hati?", options: ["4", "5", "6", "10"], ans: "6", fact: "Rukun Iman adalah 6 pilar pilar kepercayaan utama umat Islam." },
+    { id: "ki_3", type: "mc", q: "Rukun Islam pertama yang menjadi kunci masuk Islam adalah...", options: ["Shalat", "Mengucapkan Kalimat Syahadat", "Puasa", "Zakat"], ans: "Mengucapkan Kalimat Syahadat", fact: "Syahadat adalah bersaksi tiada Tuhan selain Allah dan Nabi Muhammad utusan Allah." },
+    { id: "ki_4", type: "mc", q: "Rukun Iman yang pertama adalah percaya kepada...", options: ["Malaikat", "Allah SWT", "Kitab-Kitab", "Rasul-Rasul"], ans: "Allah SWT", fact: "Iman kepada Allah berarti meyakini bahwa Allah Maha Pencipta dan Maha Esa." },
+    { id: "ki_5", type: "seq", title: "Urutkan 5 Rukun Islam", items: ["1. Syahadat", "2. Shalat Fardhu", "3. Zakat", "4. Puasa Ramadan", "5. Naik Haji"], fact: "Rukun Islam berurutan dari Syahadat hingga Ibadah Haji bagi yang mampu." },
+    { id: "ki_6", type: "mc", q: "Rukun Iman ke-2 adalah beriman kepada...", options: ["Malaikat-Malaikat Allah", "Hari Kiamat", "Kitab Allah", "Qada dan Qadar"], ans: "Malaikat-Malaikat Allah", fact: "Malaikat dibuat dari cahaya dan selalu taat pada perintah Allah." },
+    { id: "ki_7", type: "mc", q: "Mengeluarkan sebagian harta untuk fakir miskin di sebut...", options: ["Zakat", "Haji", "Syahadat", "Puasa"], ans: "Zakat", fact: "Zakat membersihkan harta dan membantu sesama yang membutuhkan." }
   ],
 
   // AREA 2: TAMAN AL-QUR'AN
   quran: [
-    { id: "tq_1", type: "mc", q: "Huruf Hijaiyah pertama dalam Al-Qur'an adalah...", options: ["ب (Ba)", "ا (Alif)", "ت (Ta)", "ج (Jim)"], ans: "ا (Alif)", arabic: "ا", fact: "Alif adalah huruf hijaiyah pertama." },
-    { id: "tq_2", type: "mc", q: "Tanda baca bunyi 'A' pada huruf Hijaiyah disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Sukun"], ans: "Fathah", arabic: "بَ", fact: "Fathah memberikan bunyi 'A' di atas huruf." },
-    { id: "tq_3", type: "mc", q: "Tanda baca bunyi 'I' pada huruf Hijaiyah disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Tasydid"], ans: "Kasrah", arabic: "بِ", fact: "Kasrah memberikan bunyi 'I' di bawah huruf." },
-    { id: "tq_4", type: "mc", q: "Tanda baca bunyi 'U' pada huruf Hijaiyah disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Tanwin"], ans: "Dhammah", arabic: "بُ", fact: "Dhammah memberikan bunyi 'U'." },
-    { id: "tq_5", type: "mc", q: "Hukum membaca nun sukun/tanwin secara jelas tanpa dengung disebut...", options: ["Izhar", "Ikhfa", "Iqlab", "Idgham"], ans: "Izhar", fact: "Izhar artinya membaca dengan jelas." }
+    { id: "tq_1", type: "mc", q: "Huruf Hijaiyah pertama dalam Al-Qur'an adalah...", options: ["ب (Ba)", "ا (Alif)", "ت (Ta)", "ج (Jim)"], ans: "ا (Alif)", arabic: "ا", fact: "Alif adalah huruf pertama dari 29 huruf Hijaiyah." },
+    { id: "tq_2", type: "mc", q: "Tanda baca baris atas yang berbunyi 'A' disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Sukun"], ans: "Fathah", arabic: "بَ", fact: "Fathah terletak di atas huruf dan menghasilkan bunyi vokal 'A'." },
+    { id: "tq_3", type: "mc", q: "Tanda baca baris bawah yang berbunyi 'I' disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Tasydid"], ans: "Kasrah", arabic: "بِ", fact: "Kasrah terletak di bawah huruf dan menghasilkan bunyi vokal 'I'." },
+    { id: "tq_4", type: "mc", q: "Tanda baca lengkung atas yang berbunyi 'U' disebut...", options: ["Fathah", "Kasrah", "Dhammah", "Tanwin"], ans: "Dhammah", arabic: "بُ", fact: "Dhammah menghasilkan bunyi vokal 'U'." },
+    { id: "tq_5", type: "mc", q: "Membaca Nun Mati secara jelas dan tidak berdengung dinamakan...", options: ["Izhar", "Ikhfa", "Iqlab", "Idgham"], ans: "Izhar", fact: "Izhar artinya dibaca jelas tanpa ada suara mendengung." },
+    { id: "tq_6", type: "mc", q: "Surah pertama dalam Al-Qur'an yang disebut 'Ummul Qur'an' adalah...", options: ["Al-Fatihah", "Al-Ikhlas", "Al-Nas", "Al-Falaq"], ans: "Al-Fatihah", fact: "Surah Al-Fatihah terdiri dari 7 ayat dan wajib dibaca dalam setiap rakaat shalat." },
+    { id: "tq_7", type: "mc", q: "Tanda baca mati / tidak berharakat disebut...", options: ["Sukun", "Tasydid", "Fathah", "Kasrah"], ans: "Sukun", arabic: "بْ", fact: "Sukun membuat huruf dibaca mati / konsonan." }
   ],
 
   // AREA 3: ISTANA IMAN
   istana: [
-    { id: "ii_1", type: "mc", q: "Kitab suci yang diturunkan Allah kepada Nabi Muhammad ﷺ adalah...", options: ["Taurat", "Zabur", "Injil", "Al-Qur'an"], ans: "Al-Qur'an", fact: "Al-Qur'an adalah kitab suci terakhir petunjuk seluruh umat manusia." },
-    { id: "ii_2", type: "mc", q: "Kitab Taurat diturunkan Allah kepada nabi...", options: ["Nabi Musa a.s.", "Nabi Isa a.s.", "Nabi Daud a.s.", "Nabi Ibrahim a.s."], ans: "Nabi Musa a.s.", fact: "Kitab Taurat diwahyukan kepada Nabi Musa a.s." },
-    { id: "ii_3", type: "mc", q: "Kitab Zabur diturunkan Allah kepada nabi...", options: ["Nabi Daud a.s.", "Nabi Isa a.s.", "Nabi Adam a.s.", "Nabi Yunus a.s."], ans: "Nabi Daud a.s.", fact: "Kitab Zabur diwahyukan kepada Nabi Daud a.s." },
-    { id: "ii_4", type: "mc", q: "Meyakini takdir baik dan takdir buruk adalah bagian dari...", options: ["Iman kepada Qada dan Qadar", "Iman kepada Malaikat", "Rukun Islam", "Syahadat"], ans: "Iman kepada Qada dan Qadar", fact: "Semua yang terjadi adalah ketentuan Allah yang penuh hikmah." }
+    { id: "ii_1", type: "mc", q: "Kitab suci terakhir pelindung umat manusia adalah...", options: ["Taurat", "Zabur", "Injil", "Al-Qur'an"], ans: "Al-Qur'an", fact: "Al-Qur'an diwahyukan kepada Nabi Muhammad ﷺ sebagai petunjuk hidup." },
+    { id: "ii_2", type: "mc", q: "Kitab Taurat diturunkan Allah kepada nabi...", options: ["Nabi Musa a.s.", "Nabi Isa a.s.", "Nabi Daud a.s.", "Nabi Ibrahim a.s."], ans: "Nabi Musa a.s.", fact: "Kitab Taurat diberikan kepada Nabi Musa a.s. untuk Bani Israil." },
+    { id: "ii_3", type: "mc", q: "Kitab Zabur diturunkan Allah kepada nabi...", options: ["Nabi Daud a.s.", "Nabi Isa a.s.", "Nabi Adam a.s.", "Nabi Yunus a.s."], ans: "Nabi Daud a.s.", fact: "Nabi Daud a.s. dikaruniai Kitab Zabur dan suara merdu." },
+    { id: "ii_4", type: "mc", q: "Meyakini takdir baik dan takdir buruk dari Allah merupakan...", options: ["Rukun Iman ke-6", "Rukun Islam ke-2", "Sunnah Nabi", "Rukun Shalat"], ans: "Rukun Iman ke-6", fact: "Qada dan Qadar mengajarkan kita selalu bersyukur dan bersabar." },
+    { id: "ii_5", type: "mc", q: "Nama-nama indah Allah SWT sejumlah 99 disebut...", options: ["Asmaul Husna", "Kalimat Thayyibah", "Ayat Kursi", "Rukun Iman"], ans: "Asmaul Husna", fact: "Mengenal Asmaul Husna membuat kita semakin mencintai Allah SWT." },
+    { id: "ii_6", type: "mc", q: "Asmaul Husna 'Ar-Rahman' artinya Allah Maha...", options: ["Pengasih", "Penyayang", "Pencipta", "Mendengar"], ans: "Pengasih", fact: "Allah Ar-Rahman memberi rezeki kepada seluruh makhluk-Nya." }
   ],
 
   // AREA 4: KOTA IBADAH
   ibadah: [
-    { id: "ib_1", type: "mc", q: "Berapa jumlah rakaat shalat Magrib?", options: ["2 Rakaat", "3 Rakaat", "4 Rakaat", "5 Rakaat"], ans: "3 Rakaat", fact: "Shalat Magrib dikerjakan sebanyak 3 rakaat." },
-    { id: "ib_2", type: "mc", q: "Shalat wajib yang dikerjakan sebanyak 2 rakaat di pagi hari adalah...", options: ["Subuh", "Zuhur", "Asar", "Isya"], ans: "Subuh", fact: "Shalat Subuh dikerjakan 2 rakaat di fajar hari." },
-    { id: "ib_3", type: "seq", title: "Urutkan Langkah Dasar Wudhu", items: ["1. Niat & Bismillah", "2. Basuh Wajah", "3. Basuh Tangan hingga Siku", "4. Usap Kepala", "5. Basuh Kaki hingga Mata Kaki"], fact: "Wudhu mensucikan kita sebelum beribadah shalat." },
-    { id: "ib_4", type: "mc", q: "Arah suci yang kita hadapi saat shalat adalah...", options: ["Kiblat (Ka'bah)", "Timur", "Utara", "Barat Daya"], ans: "Kiblat (Ka'bah)", fact: "Kiblat seluruh umat Islam berada di Ka'bah Masjidil Haram." }
+    { id: "ib_1", type: "mc", q: "Berapa jumlah rakaat dalam Shalat Fardhu Magrib?", options: ["2 Rakaat", "3 Rakaat", "4 Rakaat", "5 Rakaat"], ans: "3 Rakaat", fact: "Shalat Fardhu Magrib dikerjakan sebanyak 3 rakaat setelah matahari terbenam." },
+    { id: "ib_2", type: "mc", q: "Shalat Fardhu yang dikerjakan 2 rakaat di fajar hari adalah...", options: ["Subuh", "Zuhur", "Asar", "Isya"], ans: "Subuh", fact: "Shalat Fardhu Subuh dilakukan sebanyak 2 rakaat di fajar hari." },
+    { id: "ib_3", type: "mc", q: "Shalat wajib sehari semalam dinamakan Shalat...", options: ["Shalat Fardhu", "Shalat Sunnah", "Shalat Witir", "Shalat Dhuha"], ans: "Shalat Fardhu", fact: "Lima shalat wajib sehari semalam dinamakan Shalat Fardhu. Sedangkan shalat Witir adalah shalat sunnah muakkad." },
+    { id: "ib_4", type: "seq", title: "Urutkan Langkah Dasar Wudhu", items: ["1. Niat & Bismillah", "2. Basuh Wajah", "3. Basuh Tangan hingga Siku", "4. Usap Kepala", "5. Basuh Kaki hingga Mata Kaki"], fact: "Wudhu membersihkan diri dari hadats kecil sebelum shalat." },
+    { id: "ib_5", type: "mc", q: "Arah suci yang dihadapi umat Islam saat Shalat Fardhu adalah...", options: ["Kiblat (Ka'bah)", "Timur", "Utara", "Barat Daya"], ans: "Kiblat (Ka'bah)", fact: "Seluruh Muslim di dunia menghadap Kiblat di Ka'bah Makkah." },
+    { id: "ib_6", type: "mc", q: "Berapa total rakaat dari seluruh Shalat Fardhu dalam sehari?", options: ["17 Rakaat", "15 Rakaat", "20 Rakaat", "12 Rakaat"], ans: "17 Rakaat", fact: "Total Shalat Fardhu 5 waktu adalah 17 rakaat (2+4+4+3+4)." },
+    { id: "ib_7", type: "mc", q: "Bersuci dengan debu bersih ketika tidak ada air disebut...", options: ["Tayammum", "Mandi Wajib", "Wudhu", "Istinja"], ans: "Tayammum", fact: "Tayammum adalah kemudahan bersuci dari Allah ketika air tidak ada." }
   ],
 
   // AREA 5: TAMAN RAMADHAN
   ramadan: [
-    { id: "rm_1", type: "mc", q: "Makan di waktu dini hari sebelum memulai puasa disebut...", options: ["Sahur", "Iftar", "Tarawih", "Sedekah"], ans: "Sahur", fact: "Makan sahur memberikan keberkahan dan tenaga saat berpuasa." },
-    { id: "rm_2", type: "mc", q: "Umat Islam mulai berpuasa sejak terbit...", options: ["Fajar (Subuh)", "Matahari Siang", "Bintang", "Awan"], ans: "Fajar (Subuh)", fact: "Puasa dimulai sejak terbit fajar hingga matahari terbenam." },
-    { id: "rm_3", type: "mc", q: "Malam keutamaan yang lebih baik dari 1000 bulan di bulan Ramadan adalah...", options: ["Lailatul Qadar", "Nuzulul Qur'an", "Isra Mikraj", "Tahajud"], ans: "Lailatul Qadar", fact: "Lailatul Qadar adalah malam penuh kemuliaan." }
+    { id: "rm_1", type: "mc", q: "Makan dan minum sebelum fajar di bulan Ramadan dinamakan...", options: ["Sahur", "Iftar", "Tarawih", "Sedekah"], ans: "Sahur", fact: "Makan sahur memberi tenaga dan ada keberkahan di dalamnya." },
+    { id: "rm_2", type: "mc", q: "Berbuka puasa saat matahari terbenam disebut...", options: ["Iftar", "Sahur", "Iktikaf", "Tadarus"], ans: "Iftar", fact: "Iftar dianjurkan disegerakan saat azan Magrib berkumandang." },
+    { id: "rm_3", type: "mc", q: "Malam istimewa yang lebih baik dari 1000 bulan adalah...", options: ["Lailatul Qadar", "Nuzulul Qur'an", "Isra Mikraj", "Tahajud"], ans: "Lailatul Qadar", fact: "Lailatul Qadar terjadi pada malam-malam ganjil di akhir Ramadan." },
+    { id: "rm_4", type: "mc", q: "Zakat yang wajib dikeluarkan sebelum shalat Idul Fitri adalah...", options: ["Zakat Fitrah", "Zakat Mal", "Sedekah", "Infaq"], ans: "Zakat Fitrah", fact: "Zakat Fitrah disalurkan dalam bentuk makanan pokok untuk fakir miskin." },
+    { id: "rm_5", type: "mc", q: "Shalat sunnah yang khusus dikerjakan di malam bulan Ramadan adalah...", options: ["Tarawih", "Dhuha", "Istikharah", "Kusuf"], ans: "Tarawih", fact: "Shalat Tarawih dikerjakan setelah Shalat Fardhu Isya." }
   ],
 
   // AREA 6: JALAN MENUJU BAITULLAH
   haji: [
-    { id: "hj_1", type: "mc", q: "Bangunan suci berbentuk kubus di Makkah adalah...", options: ["Ka'bah", "Mina", "Arafah", "Safa"], ans: "Ka'bah", fact: "Ka'bah adalah pusat kiblat ibadah umat Islam di seluruh dunia." },
-    { id: "hj_2", type: "mc", q: "Mengelilingi Ka'bah sebanyak 7 kali dalam ibadah haji/umrah disebut...", options: ["Tawaf", "Sa'i", "Wukuf", "Ihram"], ans: "Tawaf", fact: "Tawaf dilakukan dengan mengelilingi Ka'bah berlawanan arah jarum jam." },
-    { id: "hj_3", type: "mc", q: "Berlari-lari kecil antara bukit Safa dan Marwah disebut...", options: ["Sa'i", "Tawaf", "Tahallul", "Muzdalifah"], ans: "Sa'i", fact: "Sa'i meneladani perjuangan Ibunda Hajar mencari air untuk Nabi Ismail a.s." }
+    { id: "hj_1", type: "mc", q: "Bangunan suci kiblat umat Islam di kota Makkah adalah...", options: ["Ka'bah", "Mina", "Arafah", "Safa"], ans: "Ka'bah", fact: "Ka'bah dibangun oleh Nabi Ibrahim a.s. dan Nabi Ismail a.s." },
+    { id: "hj_2", type: "mc", q: "Mengelilingi Ka'bah sebanyak 7 kali dalam ibadah haji disebut...", options: ["Tawaf", "Sa'i", "Wukuf", "Tahallul"], ans: "Tawaf", fact: "Tawaf dilakukan dengan berjalan mengelilingi Ka'bah." },
+    { id: "hj_3", type: "mc", q: "Berlari kecil antara bukit Safa dan Marwah dinamakan...", options: ["Sa'i", "Tawaf", "Tahallul", "Muzdalifah"], ans: "Sa'i", fact: "Sa'i meneladani perjuangan Siti Hajar mencari air untuk Nabi Ismail." },
+    { id: "hj_4", type: "mc", q: "Air suci penuh berkah yang keluar dekat Ka'bah adalah...", options: ["Air Zamzam", "Air Sungai Nil", "Air Hujan", "Air Sirat"], ans: "Air Zamzam", fact: "Air Zamzam tidak pernah habis sejak zaman Nabi Ismail a.s." }
   ],
 
   // AREA 7: JEJAK PARA NABI
   nabi: [
-    { id: "nb_1", type: "mc", q: "Nabi dan manusia pertama yang diciptakan Allah adalah...", options: ["Nabi Adam a.s.", "Nabi Nuh a.s.", "Nabi Ibrahim a.s.", "Nabi Musa a.s."], ans: "Nabi Adam a.s.", fact: "Nabi Adam a.s. adalah ayah dari seluruh umat manusia." },
-    { id: "nb_2", type: "mc", q: "Nabi yang selamat dari banjir besar dengan membuat bahtera/kapal raksasa adalah...", options: ["Nabi Nuh a.s.", "Nabi Yunus a.s.", "Nabi Saleh a.s.", "Nabi Hud a.s."], ans: "Nabi Nuh a.s.", fact: "Nabi Nuh a.s. membuat kapal besar atas perintah Allah." },
-    { id: "nb_3", type: "mc", q: "Nabi yang diberi mukjizat tidak terbakar oleh kobaran api raja Namrud adalah...", options: ["Nabi Ibrahim a.s.", "Nabi Isa a.s.", "Nabi Musa a.s.", "Nabi Sulaiman a.s."], ans: "Nabi Ibrahim a.s.", fact: "Allah menjadikan api terasa dingin dan menyelamatkan Nabi Ibrahim a.s." },
-    { id: "nb_4", type: "mc", q: "Nabi penutup para nabi (Khatamul Anbiya) adalah...", options: ["Nabi Muhammad ﷺ", "Nabi Isa a.s.", "Nabi Yahya a.s.", "Nabi Yusuf a.s."], ans: "Nabi Muhammad ﷺ", fact: "Nabi Muhammad ﷺ adalah nabi dan rasul terakhir." }
+    { id: "nb_1", type: "mc", q: "Nabi pertama sekaligus manusia pertama yang diciptakan Allah...", options: ["Nabi Adam a.s.", "Nabi Nuh a.s.", "Nabi Ibrahim a.s.", "Nabi Musa a.s."], ans: "Nabi Adam a.s.", fact: "Nabi Adam a.s. diciptakan Allah dari tanah." },
+    { id: "nb_2", type: "mc", q: "Nabi yang membuat bahtera kapal raksasa untuk selamat dari banjir...", options: ["Nabi Nuh a.s.", "Nabi Yunus a.s.", "Nabi Saleh a.s.", "Nabi Hud a.s."], ans: "Nabi Nuh a.s.", fact: "Nabi Nuh a.s. berdakwah selama ratusan tahun dengan penuh kesabaran." },
+    { id: "nb_3", type: "mc", q: "Nabi yang tidak terbakar oleh kobaran api raja Namrud adalah...", options: ["Nabi Ibrahim a.s.", "Nabi Isa a.s.", "Nabi Musa a.s.", "Nabi Sulaiman a.s."], ans: "Nabi Ibrahim a.s.", fact: "Allah memerintahkan api menjadi dingin untuk menyelamatkan Nabi Ibrahim." },
+    { id: "nb_4", type: "mc", q: "Nabi penutup dan tidak ada nabi setelahnya adalah...", options: ["Nabi Muhammad ﷺ", "Nabi Isa a.s.", "Nabi Yahya a.s.", "Nabi Yusuf a.s."], ans: "Nabi Muhammad ﷺ", fact: "Nabi Muhammad ﷺ dipanggil Khatamul Anbiya (Penutup Para Nabi)." },
+    { id: "nb_5", type: "mc", q: "Nabi yang selamat setelah ditelan oleh ikan paus raksasa adalah...", options: ["Nabi Yunus a.s.", "Nabi Musa a.s.", "Nabi Ayub a.s.", "Nabi Ilyas a.s."], ans: "Nabi Yunus a.s.", fact: "Nabi Yunus a.s. terus berdzikir memohon ampun di dalam perut ikan." },
+    { id: "nb_6", type: "mc", q: "Nabi yang diberi mukjizat bisa berbicara dengan hewan adalah...", options: ["Nabi Sulaiman a.s.", "Nabi Daud a.s.", "Nabi Yusuf a.s.", "Nabi Harun a.s."], ans: "Nabi Sulaiman a.s.", fact: "Nabi Sulaiman a.s. memimpin raja manusia, jin, dan memahami bahasa hewan." }
   ],
 
   // AREA 8: TAMAN RASULULLAH ﷺ
   rasul: [
-    { id: "rs_1", type: "mc", q: "Sifat mulia Nabi Muhammad ﷺ 'Al-Amin' artinya...", options: ["Dapat Dipercaya", "Sangat Cerdas", "Jujur", "Penyayang"], ans: "Dapat Dipercaya", fact: "Nabi Muhammad ﷺ dikenal sangat terpercaya bahkan sebelum menjadi Rasul." },
-    { id: "rs_2", type: "mc", q: "Sifat nabi 'Siddiq' artinya...", options: ["Jujur/Benar", "Menyampaikan", "Cerdas", "Amanah"], ans: "Jujur/Benar", fact: "Para nabi selalu jujur dalam perkataan dan perbuatan." },
-    { id: "rs_3", type: "mc", q: "Ibunda tercinta dari Nabi Muhammad ﷺ bernama...", options: ["Siti Aminah", "Siti Khadijah", "Siti Fatimah", "Siti Halimah"], ans: "Siti Aminah", fact: "Ibunda Nabi Muhammad ﷺ adalah Sayyidatina Aminah." }
+    { id: "rs_1", type: "mc", q: "Gelar 'Al-Amin' bagi Nabi Muhammad ﷺ artinya...", options: ["Dapat Dipercaya", "Sangat Cerdas", "Maha Penyayang", "Pengampun"], ans: "Dapat Dipercaya", fact: "Masyarakat Makkah memberi gelar Al-Amin karena kejujuran Nabi Muhammad." },
+    { id: "rs_2", type: "mc", q: "Sifat wajib Rasul 'Siddiq' artinya...", options: ["Jujur / Benar", "Menyampaikan", "Cerdas", "Dapat Dipercaya"], ans: "Jujur / Benar", fact: "Para Rasul selalu jujur dalam perkataan dan perbuatannya." },
+    { id: "rs_3", type: "mc", q: "Sifat wajib Rasul 'Amanah' artinya...", options: ["Dapat Dipercaya", "Jujur", "Cerdas", "Menyampaikan"], ans: "Dapat Dipercaya", fact: "Amanah berarti mampu memegang kepercayaan tanpa khianat." },
+    { id: "rs_4", type: "mc", q: "Ibunda tercinta Nabi Muhammad ﷺ bernama...", options: ["Siti Aminah", "Siti Khadijah", "Siti Fatimah", "Siti Halimah"], ans: "Siti Aminah", fact: "Ibunda Nabi Muhammad ﷺ meninggal dunia saat beliau masih kecil." },
+    { id: "rs_5", type: "mc", q: "Istri pertama Rasulullah ﷺ yang sangat dermawan adalah...", options: ["Siti Khadijah", "Siti Aisyah", "Siti Hafsah", "Siti Zainab"], ans: "Siti Khadijah", fact: "Siti Khadijah r.a. menginfakkan seluruh hartanya untuk dakwah Islam." }
   ],
 
   // AREA 9: DUNIA PARA MALAIKAT
   malaikat: [
-    { id: "ml_1", type: "mc", q: "Malaikat yang bertugas menyampaikan wahyu Allah kepada para nabi adalah...", options: ["Malaikat Jibril a.s.", "Malaikat Mikail a.s.", "Malaikat Israfil a.s.", "Malaikat Ridwan a.s."], ans: "Malaikat Jibril a.s.", fact: "Malaikat Jibril menyampaikan wahyu Al-Qur'an." },
-    { id: "ml_2", type: "mc", q: "Malaikat yang bertugas membagikan rezeki dan menurunkan hujan adalah...", options: ["Malaikat Mikail a.s.", "Malaikat Izrail a.s.", "Malaikat Raqib a.s.", "Malaikat Atid a.s."], ans: "Malaikat Mikail a.s.", fact: "Malaikat Mikail mengatur pembagian rezeki dari Allah." },
-    { id: "ml_3", type: "mc", q: "Malaikat Raqib bertugas untuk...", options: ["Mencatat amal kebaikan", "Mencatat amal keburukan", "Menjaga Surga", "Meniup sangkakala"], ans: "Mencatat amal kebaikan", fact: "Malaikat Raqib senantiasa mencatat kebaikan yang kita lakukan." }
+    { id: "ml_1", type: "mc", q: "Malaikat bertugas menyampaikan wahyu Allah kepada nabi adalah...", options: ["Malaikat Jibril", "Malaikat Mikail", "Malaikat Israfil", "Malaikat Ridwan"], ans: "Malaikat Jibril", fact: "Malaikat Jibril bertugas membawa wahyu seperti Al-Qur'an." },
+    { id: "ml_2", type: "mc", q: "Malaikat yang bertugas membagi rezeki dan menurunkan hujan...", options: ["Malaikat Mikail", "Malaikat Izrail", "Malaikat Raqib", "Malaikat Atid"], ans: "Malaikat Mikail", fact: "Malaikat Mikail mengatur tumbuhan, hujan, dan rezeki." },
+    { id: "ml_3", type: "mc", q: "Malaikat yang bertugas mencatat amal kebaikan kita adalah...", options: ["Malaikat Raqib", "Malaikat Atid", "Malaikat Malik", "Malaikat Munkar"], ans: "Malaikat Raqib", fact: "Malaikat Raqib berada di sebelah kanan mencatat setiap pahala kita." },
+    { id: "ml_4", type: "mc", q: "Malaikat yang bertugas mencatat amal keburukan adalah...", options: ["Malaikat Atid", "Malaikat Raqib", "Malaikat Nakir", "Malaikat Israfil"], ans: "Malaikat Atid", fact: "Malaikat Atid berada di sebelah kiri mencatat perbuatan salah." },
+    { id: "ml_5", type: "mc", q: "Malaikat yang bertugas menjaga pintu Surga adalah...", options: ["Malaikat Ridwan", "Malaikat Malik", "Malaikat Izrail", "Malaikat Jibril"], ans: "Malaikat Ridwan", fact: "Malaikat Ridwan menyambut orang beriman yang masuk ke dalam Surga." },
+    { id: "ml_6", type: "mc", q: "Malaikat yang bertugas meniup sangkakala tanda kiamat...", options: ["Malaikat Israfil", "Malaikat Izrail", "Malaikat Munkar", "Malaikat Nakir"], ans: "Malaikat Israfil", fact: "Malaikat Israfil siap meniup sangkakala saat perintah Allah tiba." }
   ],
 
   // AREA 10: TAMAN AKHLAK
   akhlak: [
-    { id: "ak_1", type: "mc", q: "Ketika meminta bantuan kepada orang lain, kita mengucapkan...", options: ["Tolong", "Terima Kasih", "Maaf", "Permisi"], ans: "Tolong", fact: "Kata 'Tolong' menunjukkan adab bersopan santun." },
-    { id: "ak_2", type: "mc", q: "Ketika ibu meminta bantuan merapikan meja makan, tindakan terbaik adalah...", options: ["Membantu dengan senang hati", "Pura-pura tidak dengar", "Marah-marah", "Pergi bermain"], ans: "Membantu dengan senang hati", fact: "Berbakti kepada orang tua mendatangkan keridhaan Allah." },
-    { id: "ak_3", type: "mc", q: "Sebelum makan dan minum, kita disunnahkan membaca...", options: ["Bismillah", "Alhamdulillah", "Subhanallah", "MasyaAllah"], ans: "Bismillah", fact: "Membaca Bismillah memohon keberkahan pada makanan kita." }
+    { id: "ak_1", type: "mc", q: "Ketika kita memerlukan bantuan orang lain, kita ucapkan...", options: ["Tolong", "Terima Kasih", "Maaf", "Permisi"], ans: "Tolong", fact: "Meminta bantuan dengan sopan menggunakan kata Tolong adalah adab terpuji." },
+    { id: "ak_2", type: "mc", q: "Setelah menerima pertolongan atau hadiah, kita mengucapkan...", options: ["Terima Kasih / Jazakallah", "Maaf", "Tolong", "Biasa saja"], ans: "Terima Kasih / Jazakallah", fact: "Mengucapkan terima kasih merupakan bentuk rasa syukur atas kebaikan orang lain." },
+    { id: "ak_3", type: "mc", q: "Sebelum makan dan minum, kita disunnahkan membaca...", options: ["Bismillah", "Alhamdulillah", "Subhanallah", "MasyaAllah"], ans: "Bismillah", fact: "Membaca Bismillah memohon keberkahan pada makanan kita." },
+    { id: "ak_4", type: "mc", q: "Sikap ramah dan murah tersenyum kepada sesama dihitung sebagai...", options: ["Sedekah", "Dosa", "Kesalahan", "Beban"], ans: "Sedekah", fact: "Nabi Muhammad ﷺ bersabda bahwa senyummu kepada saudaramu adalah sedekah." },
+    { id: "ak_5", type: "mc", q: "Sikap berbakti dan patuh kepada orang tua dinamakan...", options: ["Birrul Walidain", "Uqul Walidain", "Tawadhu", "Istiqamah"], ans: "Birrul Walidain", fact: "Birrul Walidain adalah amalan mulia yang diridhai Allah SWT." }
   ]
 };
 
@@ -1138,7 +1113,7 @@ function showHome() {
   switchView("homeView");
 }
 
-// Render Dashboard Area Map (ALL UNLOCKED)
+// Render Dashboard Area Map
 function renderAreaMap() {
   const grid = document.getElementById("areaMapGrid");
   grid.innerHTML = "";
@@ -1193,9 +1168,9 @@ function updateUI() {
 function getPraiseMessage() {
   const praises = [
     `MasyaAllah, jawabanmu benar, ${gameState.nickName}!`,
-    `Hebat sekali, ${gameState.nickName}!`,
+    `Hebat sekali, ${gameState.nickName}! Jawabanmu tepat!`,
     `Pintar sekali, ${gameState.nickName}!`,
-    `Luar biasa, ${gameState.nickName}!`,
+    `Luar biasa, ${gameState.nickName}! Jawaban kamu benar!`,
     `Barakallah, jawabanmu tepat, ${gameState.nickName}!`
   ];
   return praises[Math.floor(Math.random() * praises.length)];
@@ -1313,18 +1288,23 @@ function startQuizView(q) {
   speakAudio(q.q);
 }
 
+// PERBAIKAN UTAMA: Suara mengucapkan pujian DAN isi jawaban benar serta faktanya
 function checkQuizAnswer(selected, correct, btnEl, fact) {
   if (selected === correct) {
     btnEl.classList.add("correct");
     const praiseText = getPraiseMessage();
-    speakAudio(praiseText);
+    
+    // Suara membaca pujian + jawaban benar + penjelasan
+    const fullAudioText = `${praiseText}. Jawabannya adalah: ${correct}. ${fact || ''}`;
+    speakAudio(fullAudioText);
+
     setTimeout(() => {
       addRewardProgress(20, 1, fact);
-    }, 400);
+    }, 500);
   } else {
     btnEl.classList.add("wrong");
     playSynthSound("wrong");
-    speakAudio(`Belum tepat, ${gameState.nickName}. Coba ingat kembali ya!`);
+    speakAudio(`Belum tepat, ${gameState.nickName}. Coba ingat-ingat lagi ya!`);
     setTimeout(() => {
       btnEl.classList.remove("wrong");
     }, 600);
@@ -1375,12 +1355,16 @@ function handleSeqSwap(idx) {
   }
 }
 
+// PERBAIKAN: Membaca urutan lengkap setelah jawaban benar
 function checkSequenceAnswer() {
   const isCorrect = currentSeqState.every((item, i) => item === currentQuestion.items[i]);
   
   if (isCorrect) {
     const praiseText = getPraiseMessage();
-    speakAudio(praiseText);
+    const cleanSeq = currentSeqState.map(i => i.replace(/^\d+\.\s*/, '')).join(', ');
+    const fullSpeech = `${praiseText}. Urutan yang benar adalah: ${cleanSeq}. ${currentQuestion.fact || ''}`;
+    
+    speakAudio(fullSpeech);
     addRewardProgress(30, 2, currentQuestion.fact);
   } else {
     playSynthSound("wrong");
