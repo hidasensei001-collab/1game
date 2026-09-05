@@ -137,7 +137,7 @@ header {
   background: #ECFDF5;
   border: 3px solid var(--emerald);
   border-radius: 20px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 13px;
   font-weight: 800;
   color: var(--emerald-dark);
@@ -229,7 +229,7 @@ header {
 .btn-sky { background: var(--sky); color: white; box-shadow: 0 5px 0 #0284C7; }
 .btn-purple { background: var(--purple); color: white; box-shadow: 0 5px 0 #6D28D9; }
 
-/* Splash & Avatar Selection */
+/* Splash & Player Selection */
 .logo-box {
   text-align: center;
   padding: 20px 0 10px;
@@ -250,45 +250,35 @@ header {
   margin-top: 4px;
 }
 
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 16px 0;
-}
-
-.avatar-card {
-  background: white;
-  border: 4px solid #E5E7EB;
-  border-radius: 20px;
-  padding: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.avatar-card.selected {
-  border-color: var(--emerald);
-  background: #ECFDF5;
-  transform: scale(1.03);
-}
-
-.avatar-icon { font-size: 48px; }
-.avatar-label { font-size: 14px; font-weight: 800; margin-top: 6px; color: var(--text-main); }
-
-.input-box {
+.player-select-btn {
   width: 100%;
-  padding: 14px;
-  border: 4px solid #E5E7EB;
-  border-radius: 18px;
-  font-size: 16px;
-  font-weight: 800;
-  text-align: center;
-  outline: none;
-  margin-bottom: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s;
+  text-align: left;
+  border: 4px solid;
 }
 
-.input-box:focus { border-color: var(--emerald); }
+.player-select-btn:active {
+  transform: translateY(3px);
+}
+
+.player-btn-raina {
+  background: #FFF0F3;
+  border-color: #EC4899;
+  color: #9D174D;
+}
+
+.player-btn-fatih {
+  background: #EBF3FF;
+  border-color: #0EA5E9;
+  color: #0369A1;
+}
 
 /* Progress & Dashboard */
 .hero-card {
@@ -370,11 +360,6 @@ header {
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   position: relative;
-}
-
-.area-card.locked {
-  opacity: 0.65;
-  filter: grayscale(0.6);
 }
 
 .area-icon {
@@ -650,9 +635,10 @@ header {
       <i class="fa-solid fa-house"></i>
     </button>
 
-    <div class="player-badge" onclick="showProfile()">
-      <span id="headerAvatar">👦</span>
-      <span id="headerName">Anak Hebat</span>
+    <div class="player-badge" onclick="showPlayerSelectionScreen()">
+      <span id="headerAvatar">👧</span>
+      <span id="headerName">Raina</span>
+      <i class="fa-solid fa-arrows-rotate" style="font-size: 10px; margin-left: 2px;"></i>
     </div>
 
     <div class="badge-pill">
@@ -667,7 +653,7 @@ header {
 
   <main class="main">
 
-    <!-- VIEW 1: ONBOARDING / SPLASH -->
+    <!-- VIEW 1: PLAYER SELECTION SPLASH SCREEN -->
     <section class="view active" id="splashView">
       <div class="logo-box">
         <div style="font-size: 56px;">🌙</div>
@@ -676,25 +662,27 @@ header {
         <p style="color: #D1FAE5; font-size: 13px; margin-top: 6px;">"Belajar Islam, Bermain, dan Menjadi Anak Hebat!"</p>
       </div>
 
-      <div class="card" style="margin-top: 10px;">
-        <div class="subtitle" style="margin-bottom: 8px;">Siapa nama kamu?</div>
-        <input type="text" id="playerNameInput" class="input-box" placeholder="Ketik namamu di sini..." maxlength="15">
+      <div class="card" style="margin-top: 14px;">
+        <div class="title-lg" style="font-size: 20px; margin-bottom: 4px;">PILIH PEMAIN</div>
+        <p class="subtitle" style="margin-bottom: 16px;">Siapa yang mau bermain hari ini?</p>
         
-        <div class="subtitle" style="margin-bottom: 4px;">Pilih karaktermu:</div>
-        <div class="avatar-grid">
-          <div class="avatar-card selected" onclick="selectAvatar('👦', this)">
-            <div class="avatar-icon">👦</div>
-            <div class="avatar-label">Anak Laki-Laki</div>
-          </div>
-          <div class="avatar-card" onclick="selectAvatar('👧', this)">
-            <div class="avatar-icon">👧</div>
-            <div class="avatar-label">Anak Perempuan</div>
-          </div>
-        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button class="player-select-btn player-btn-raina" onclick="selectAndStartPlayer('raina')">
+            <span style="font-size: 42px;">👧</span>
+            <div>
+              <div style="font-size: 17px; font-weight: 900;">Marisa Raina Hidayatullah</div>
+              <div style="font-size: 12px; font-weight: 800; opacity: 0.85;">Panggil: Raina</div>
+            </div>
+          </button>
 
-        <button class="btn btn-emerald" onclick="confirmPlayer()">
-          🚀 MULAI PETUALANGAN
-        </button>
+          <button class="player-select-btn player-btn-fatih" onclick="selectAndStartPlayer('fatih')">
+            <span style="font-size: 42px;">👦</span>
+            <div>
+              <div style="font-size: 17px; font-weight: 900;">Muhammad Alfatih Hidayatullah</div>
+              <div style="font-size: 12px; font-weight: 800; opacity: 0.85;">Panggil: Alfatih</div>
+            </div>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -912,21 +900,27 @@ header {
    HIDA ISLAMIC ADVENTURE — GAME ENGINE & DATABASE
    ========================================================= */
 
-// 1. GAME AREAS DATA
+// 1. PLAYERS DATABASE
+const PLAYERS = {
+  raina: { id: "raina", fullName: "Marisa Raina Hidayatullah", nick: "Raina", avatar: "👧" },
+  fatih: { id: "fatih", fullName: "Muhammad Alfatih Hidayatullah", nick: "Alfatih", avatar: "👦" }
+};
+
+// 2. GAME AREAS DATA (ALL UNLOCKED)
 const DUNIA_HIDA_AREAS = [
-  { id: "iman", title: "Kampung Iman", icon: "🕌", color: "#10B981", desc: "Rukun Islam & Rukun Iman", levelReq: 1 },
-  { id: "quran", title: "Taman Al-Qur'an", icon: "📖", color: "#0EA5E9", desc: "Hijaiyah, Harakat & Tajwid", levelReq: 1 },
-  { id: "istana", title: "Istana Iman", icon: "🌟", color: "#8B5CF6", desc: "Mengenal Allah, Kitab & Rasul", levelReq: 2 },
-  { id: "ibadah", title: "Kota Ibadah", icon: "🕌", color: "#F59E0B", desc: "Wudhu, Shalat & Adab Masjid", levelReq: 3 },
-  { id: "ramadan", title: "Taman Ramadhan", icon: "🌙", color: "#14B8A6", desc: "Puasa, Sahur & Zakat Fitrah", levelReq: 4 },
-  { id: "haji", title: "Jalan Menuju Baitullah", icon: "🕋", color: "#D97706", desc: "Haji, Umrah & Ka'bah", levelReq: 5 },
-  { id: "nabi", title: "Jejak Para Nabi", icon: "🌴", color: "#059669", desc: "25 Nabi & Rasul Allah", levelReq: 6 },
-  { id: "rasul", title: "Taman Rasulullah ﷺ", icon: "🌹", color: "#EC4899", desc: "Akhlak & Sunnah Nabi", levelReq: 7 },
-  { id: "malaikat", title: "Dunia Para Malaikat", icon: "👼", color: "#6366F1", desc: "10 Malaikat & Tugasnya", levelReq: 8 },
-  { id: "akhlak", title: "Taman Akhlak", icon: "❤️", color: "#F43F5E", desc: "Adab & Kebiasaan Baik", levelReq: 9 }
+  { id: "iman", title: "Kampung Iman", icon: "🕌", color: "#10B981", desc: "Rukun Islam & Rukun Iman" },
+  { id: "quran", title: "Taman Al-Qur'an", icon: "📖", color: "#0EA5E9", desc: "Hijaiyah, Harakat & Tajwid" },
+  { id: "istana", title: "Istana Iman", icon: "🌟", color: "#8B5CF6", desc: "Mengenal Allah, Kitab & Rasul" },
+  { id: "ibadah", title: "Kota Ibadah", icon: "🕌", color: "#F59E0B", desc: "Wudhu, Shalat & Adab Masjid" },
+  { id: "ramadan", title: "Taman Ramadhan", icon: "🌙", color: "#14B8A6", desc: "Puasa, Sahur & Zakat Fitrah" },
+  { id: "haji", title: "Jalan Menuju Baitullah", icon: "🕋", color: "#D97706", desc: "Haji, Umrah & Ka'bah" },
+  { id: "nabi", title: "Jejak Para Nabi", icon: "🌴", color: "#059669", desc: "25 Nabi & Rasul Allah" },
+  { id: "rasul", title: "Taman Rasulullah ﷺ", icon: "🌹", color: "#EC4899", desc: "Akhlak & Sunnah Nabi" },
+  { id: "malaikat", title: "Dunia Para Malaikat", icon: "👼", color: "#6366F1", desc: "10 Malaikat & Tugasnya" },
+  { id: "akhlak", title: "Taman Akhlak", icon: "❤️", color: "#F43F5E", desc: "Adab & Kebiasaan Baik" }
 ];
 
-// 2. ISLAMIC COMPREHENSIVE KNOWLEDGE DATABASE (200+ MATERI & SOAL)
+// 3. ISLAMIC COMPREHENSIVE KNOWLEDGE DATABASE
 const ISLAMIC_DATABASE = {
   // AREA 1: KAMPUNG IMAN
   iman: [
@@ -1006,7 +1000,7 @@ const ISLAMIC_DATABASE = {
   ]
 };
 
-// 3. ACHIEVEMENTS LIST
+// 4. ACHIEVEMENTS LIST
 const GAME_ACHIEVEMENTS = [
   { id: "ac_1", title: "Langkah Pertama", desc: "Main pertama kali di Dunia HIDA", icon: "🌱" },
   { id: "ac_2", title: "Sahabat Iman", desc: "Selesaikan 5 materi di Kampung Iman", icon: "🕌" },
@@ -1016,10 +1010,14 @@ const GAME_ACHIEVEMENTS = [
   { id: "ac_6", title: "Bintang HIDA", desc: "Kumpulkan total 15 Bintang", icon: "⭐" }
 ];
 
-// 4. GAME STATE ENGINE
+// 5. GAME STATE ENGINE
+let currentActivePlayerKey = "raina";
+
 let gameState = {
-  playerName: "Anak Hebat",
-  avatar: "👦",
+  playerKey: "raina",
+  playerName: "Marisa Raina Hidayatullah",
+  nickName: "Raina",
+  avatar: "👧",
   level: 1,
   xp: 0,
   stars: 0,
@@ -1040,22 +1038,64 @@ let audioCtx = null;
 
 // Initialize App
 document.addEventListener("DOMContentLoaded", () => {
-  loadSavedData();
   renderAreaMap();
-  updateUI();
 });
+
+// Select Player Logic
+function selectAndStartPlayer(playerKey) {
+  currentActivePlayerKey = playerKey;
+  const playerInfo = PLAYERS[playerKey];
+  
+  loadSavedData(playerKey);
+  
+  gameState.playerKey = playerKey;
+  gameState.playerName = playerInfo.fullName;
+  gameState.nickName = playerInfo.nick;
+  gameState.avatar = playerInfo.avatar;
+
+  saveState();
+  updateUI();
+  switchView("homeView");
+  speakAudio(`Assalamu'alaikum ${gameState.nickName}! Yuk belajar dan bermain bersama HIDA!`);
+}
+
+function showPlayerSelectionScreen() {
+  switchView("splashView");
+}
 
 // Save & Load LocalStorage
 function saveState() {
-  localStorage.setItem("hida_game_state", JSON.stringify(gameState));
+  if (gameState.playerKey) {
+    localStorage.setItem(`hida_game_state_${gameState.playerKey}`, JSON.stringify(gameState));
+  }
 }
 
-function loadSavedData() {
-  const saved = localStorage.getItem("hida_game_state");
+function loadSavedData(key = currentActivePlayerKey) {
+  const saved = localStorage.getItem(`hida_game_state_${key}`);
+  const playerInfo = PLAYERS[key];
+  
   if (saved) {
     try {
       gameState = { ...gameState, ...JSON.parse(saved) };
     } catch(e) { console.error("Error loading state", e); }
+  } else {
+    gameState = {
+      playerKey: key,
+      playerName: playerInfo.fullName,
+      nickName: playerInfo.nick,
+      avatar: playerInfo.avatar,
+      level: 1,
+      xp: 0,
+      stars: 0,
+      streak: 1,
+      correctCount: 0,
+      unlockedCards: [],
+      achievements: [],
+      dailyProgress: 0,
+      dailyTarget: 5,
+      lastPlayDate: new Date().toDateString(),
+      audioEnabled: true
+    };
   }
 
   // Check Daily Streak
@@ -1068,23 +1108,6 @@ function loadSavedData() {
   }
 }
 
-// Player Onboarding & Avatar
-function selectAvatar(avatarEmoji, el) {
-  document.querySelectorAll(".avatar-card").forEach(c => c.classList.remove("selected"));
-  el.classList.add("selected");
-  gameState.avatar = avatarEmoji;
-}
-
-function confirmPlayer() {
-  const input = document.getElementById("playerNameInput").value.trim();
-  if (input) gameState.playerName = input;
-  
-  saveState();
-  updateUI();
-  switchView("homeView");
-  speakAudio(`Selamat datang ${gameState.playerName}! Mari belajar bersama HIDA.`);
-}
-
 function showProfile() {
   document.getElementById("pDashName").textContent = gameState.playerName;
   document.getElementById("pDashLevel").textContent = `Level ${gameState.level}`;
@@ -1095,9 +1118,9 @@ function showProfile() {
 }
 
 function resetProgressData() {
-  if (confirm("Apakah Anda yakin ingin mereset seluruh progress belajar?")) {
-    localStorage.removeItem("hida_game_state");
-    location.reload();
+  if (confirm(`Apakah Anda yakin ingin mereset progress belajar untuk ${gameState.nickName}?`)) {
+    localStorage.removeItem(`hida_game_state_${gameState.playerKey}`);
+    selectAndStartPlayer(gameState.playerKey);
   }
 }
 
@@ -1115,36 +1138,30 @@ function showHome() {
   switchView("homeView");
 }
 
-// Render Dashboard Area Map
+// Render Dashboard Area Map (ALL UNLOCKED)
 function renderAreaMap() {
   const grid = document.getElementById("areaMapGrid");
   grid.innerHTML = "";
 
   DUNIA_HIDA_AREAS.forEach(area => {
-    const isLocked = gameState.level < area.levelReq;
     const card = document.createElement("div");
-    card.className = `area-card ${isLocked ? 'locked' : ''}`;
+    card.className = "area-card";
     card.style.borderColor = area.color;
 
     card.innerHTML = `
       <div class="area-icon" style="background: ${area.color}20; color: ${area.color};">
-        ${isLocked ? '🔒' : area.icon}
+        ${area.icon}
       </div>
       <div class="area-info">
         <div class="area-title">${area.title}</div>
         <div class="area-desc">${area.desc}</div>
         <div class="area-badge" style="background: ${area.color}15; color: ${area.color};">
-          ${isLocked ? `Buka di Level ${area.levelReq}` : '✨ Siap Dimainkan'}
+          ✨ Siap Dimainkan
         </div>
       </div>
     `;
 
-    if (!isLocked) {
-      card.onclick = () => openAreaGame(area.id);
-    } else {
-      card.onclick = () => speakAudio(`Area ini terbuka di Level ${area.levelReq}. Teruskan semangat belajarmu!`);
-    }
-
+    card.onclick = () => openAreaGame(area.id);
     grid.appendChild(card);
   });
 }
@@ -1152,10 +1169,10 @@ function renderAreaMap() {
 // UI Update Loop
 function updateUI() {
   document.getElementById("headerAvatar").textContent = gameState.avatar;
-  document.getElementById("headerName").textContent = gameState.playerName;
+  document.getElementById("headerName").textContent = gameState.nickName;
   document.getElementById("starCounter").textContent = gameState.stars;
   
-  document.getElementById("homeGreeting").textContent = `${gameState.playerName}! 🌟`;
+  document.getElementById("homeGreeting").textContent = `${gameState.nickName}! 🌟`;
   document.getElementById("homeLevelBadge").textContent = `Level ${gameState.level}`;
   
   const xpNeed = gameState.level * 100;
@@ -1170,6 +1187,18 @@ function updateUI() {
   document.getElementById("dailyMissionProgress").textContent = `${gameState.dailyProgress} / ${gameState.dailyTarget}`;
 
   renderAreaMap();
+}
+
+// Custom Speech Praise Helper
+function getPraiseMessage() {
+  const praises = [
+    `MasyaAllah, jawabanmu benar, ${gameState.nickName}!`,
+    `Hebat sekali, ${gameState.nickName}!`,
+    `Pintar sekali, ${gameState.nickName}!`,
+    `Luar biasa, ${gameState.nickName}!`,
+    `Barakallah, jawabanmu tepat, ${gameState.nickName}!`
+  ];
+  return praises[Math.floor(Math.random() * praises.length)];
 }
 
 // Add XP & Rewards Engine
@@ -1196,8 +1225,8 @@ function addRewardProgress(xpAmount = 20, starAmount = 1, factText = "") {
   document.getElementById("mIcon").textContent = levelUp ? "🚀" : "🎉";
   document.getElementById("mTitle").textContent = levelUp ? "NAIK LEVEL!" : "MASYAALLAH!";
   document.getElementById("mDesc").textContent = levelUp 
-    ? `Hebat! Kamu sekarang mencapai Level ${gameState.level}!` 
-    : `Kamu mendapatkan +${xpAmount} XP dan ⭐ ${starAmount} Bintang!`;
+    ? `Hebat ${gameState.nickName}! Kamu sekarang mencapai Level ${gameState.level}!` 
+    : `${gameState.nickName} mendapatkan +${xpAmount} XP dan ⭐ ${starAmount} Bintang!`;
 
   const factBox = document.getElementById("mFactBox");
   if (factText) {
@@ -1283,14 +1312,15 @@ function startQuizView(q) {
 function checkQuizAnswer(selected, correct, btnEl, fact) {
   if (selected === correct) {
     btnEl.classList.add("correct");
-    speakAudio("MasyaAllah, jawabanmu benar!");
+    const praiseText = getPraiseMessage();
+    speakAudio(praiseText);
     setTimeout(() => {
       addRewardProgress(20, 1, fact);
     }, 400);
   } else {
     btnEl.classList.add("wrong");
     playSynthSound("wrong");
-    speakAudio("Belum tepat. Coba ingat kembali ya!");
+    speakAudio(`Belum tepat, ${gameState.nickName}. Coba ingat kembali ya!`);
     setTimeout(() => {
       btnEl.classList.remove("wrong");
     }, 600);
@@ -1345,10 +1375,12 @@ function checkSequenceAnswer() {
   const isCorrect = currentSeqState.every((item, i) => item === currentQuestion.items[i]);
   
   if (isCorrect) {
+    const praiseText = getPraiseMessage();
+    speakAudio(praiseText);
     addRewardProgress(30, 2, currentQuestion.fact);
   } else {
     playSynthSound("wrong");
-    speakAudio("Urutannya belum pas. Coba tukar posisinya lagi!");
+    speakAudio(`Urutannya belum pas, ${gameState.nickName}. Coba tukar posisinya lagi!`);
   }
 }
 
@@ -1419,7 +1451,7 @@ function showAchievements() {
   grid.innerHTML = "";
 
   GAME_ACHIEVEMENTS.forEach(ac => {
-    const isUnlocked = gameState.stars >= 5; // Simple progress rule
+    const isUnlocked = gameState.stars >= 5;
     const card = document.createElement("div");
     card.className = "card";
     card.style.padding = "12px";
