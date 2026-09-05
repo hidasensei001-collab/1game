@@ -1242,7 +1242,11 @@ function addRewardProgress(xpAmount = 20, starAmount = 1, factText = "") {
 
 function closeRewardModal() {
   document.getElementById("rewardModal").classList.remove("show");
-  showHome();
+  if (currentAreaId) {
+    openAreaGame(currentAreaId);
+  } else {
+    showHome();
+  }
 }
 
 // Game Router Logic
