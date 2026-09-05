@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b8f72">
+<meta name="mobile-web-app-capable" content="yes">
+<title>HIDA Islamic Adventure</title>
+<style>
+:root{
+  --bg:#f5f8f4;--ink:#17352f;--muted:#6b7d77;--card:#fff;--green:#0b8f72;
+  --green2:#16b98e;--blue:#4c8dff;--gold:#f6b73c;--purple:#8c72e8;--pink:#ee82a5;
+  --cream:#fff8e7;--red:#e85d67;--shadow:0 10px 28px rgba(22,55,47,.12);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#dfe9e5}
+body{display:flex;justify-content:center}
+button,input{font:inherit}
+button{border:0;cursor:pointer}
+#app{position:relative;width:100%;max-width:500px;min-height:100dvh;overflow:hidden;background:
+radial-gradient(circle at 10% 8%,#fff 0 7%,transparent 25%),
+linear-gradient(160deg,#edf9f4,#fdf8ec 55%,#eef4ff);box-shadow:0 0 50px #0002}
+#app:before{content:"";position:absolute;inset:0;pointer-events:none;background:
+radial-gradient(circle at 85% 15%,#ffffffb8 0 2px,transparent 3px),
+radial-gradient(circle at 72% 8%,#fff 0 1px,transparent 2px),
+radial-gradient(circle at 22% 28%,#fff 0 1px,transparent 2px);
+background-size:120px 100px,90px 90px,140px 140px}
+header{position:sticky;top:0;z-index:20;height:64px;padding:8px 10px;display:flex;align-items:center;gap:8px;
+background:#ffffffdc;backdrop-filter:blur(14px);border-bottom:1px solid #d8e8e2}
+.hbtn,.statPill{min-width:44px;height:44px;border-radius:15px;background:#fff;box-shadow:0 4px 12px #17352f18;display:grid;place-items:center}
+.hbtn{font-size:20px;color:var(--green)} .hbtn:active,.choice:active,.gameCard:active,.primary:active{transform:scale(.97)}
+.playerBadge{flex:1;min-width:0;height:44px;padding:0 10px;border-radius:15px;background:#effaf6;display:flex;align-items:center;gap:7px;font-weight:800}
+.playerBadge span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.statPill{padding:0 10px;display:flex;gap:5px;align-items:center;color:#8a5b00;font-weight:900;background:#fff8df}
+main{position:relative;z-index:1;padding:14px 14px 28px}
+.view{display:none;animation:in .25s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.splash,.onboard{text-align:center;min-height:calc(100dvh - 28px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px}
+.logoOrb{width:112px;height:112px;border-radius:35px;display:grid;place-items:center;font-size:58px;background:linear-gradient(145deg,#0b8f72,#57d5b1);box-shadow:0 18px 35px #0b8f7240;transform:rotate(-4deg)}
+h1{font-size:30px;line-height:1.05;margin:18px 0 7px}h2{margin:5px 0;font-size:24px}h3{margin:0}
+.subtitle{color:var(--muted);line-height:1.5}.mini{font-size:12px;color:var(--muted)}
+.primary,.secondary{width:100%;min-height:50px;border-radius:17px;font-weight:900;margin-top:10px;padding:12px 16px}
+.primary{background:linear-gradient(135deg,var(--green),var(--green2));color:white;box-shadow:0 7px 0 #087158}
+.secondary{background:#fff;color:var(--green);box-shadow:var(--shadow)}
+input.name{width:100%;height:52px;border:2px solid #d6e6df;border-radius:17px;padding:0 16px;margin:16px 0 6px;background:#fff;outline:none}
+.avatarRow{display:flex;gap:10px;justify-content:center;margin:12px 0}.avatarPick{width:72px;height:72px;border-radius:20px;background:#fff;border:3px solid transparent;font-size:34px;box-shadow:var(--shadow)}
+.avatarPick.selected{border-color:var(--green);background:#effaf6}
+.hero{border-radius:28px;padding:18px;color:#fff;background:linear-gradient(135deg,#087e66,#16b98e 55%,#4aa7ff);box-shadow:var(--shadow);overflow:hidden;position:relative}
+.hero:after{content:"☾";position:absolute;right:12px;top:-14px;font-size:110px;color:#ffffff25}
+.hero h2{font-size:26px}.hero p{margin:5px 0 14px;opacity:.9}.levelLine{display:flex;justify-content:space-between;font-size:13px;font-weight:800}
+.bar{height:11px;background:#ffffff40;border-radius:20px;overflow:hidden}.bar>i{display:block;height:100%;background:#fff;border-radius:20px;width:0;transition:width .4s}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.stat{background:#fff;border-radius:18px;padding:10px 5px;text-align:center;box-shadow:0 5px 18px #17352f0c}.stat b{display:block;font-size:17px}.stat small{font-size:10px;color:var(--muted)}
+.sectionTitle{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 9px;font-size:18px;font-weight:950}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gameCard{min-height:116px;padding:14px;border-radius:22px;background:#fff;text-align:left;box-shadow:var(--shadow);border:1px solid #e3eee9;transition:.15s}
+.gameCard .icon{font-size:34px}.gameCard h3{font-size:15px;margin-top:7px}.gameCard p{font-size:11px;color:var(--muted);margin:3px 0 0;line-height:1.3}
+.gameCard.locked{opacity:.6;filter:saturate(.5)}.wide{grid-column:1/-1}
+.mission{padding:14px;border-radius:21px;background:linear-gradient(135deg,#fff7dc,#fff);box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}.mission .mi{font-size:32px}.mission b{display:block}.mission small{color:var(--muted)}
+.back{background:#fff;border-radius:14px;padding:10px 13px;font-weight:900;color:var(--green);box-shadow:0 4px 12px #17352f12;margin-bottom:10px}
+.lesson{background:#fff;border-radius:25px;padding:18px;box-shadow:var(--shadow);text-align:center}.arabic{direction:rtl;font-size:70px;line-height:1.45;margin:10px 0;font-family:"Noto Naskh Arabic","Amiri","Scheherazade New",serif}.lesson .fact{background:#f1faf7;border-radius:16px;padding:11px;text-align:left;font-size:13px;line-height:1.45}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.choice{min-height:56px;padding:10px;border-radius:17px;background:#fff;box-shadow:var(--shadow);font-weight:850;color:var(--ink);border:2px solid transparent}
+.choice.correct{border-color:#20a879;background:#effaf6}.choice.wrong{border-color:#e85d67;background:#fff0f1}.choice:disabled{cursor:default}
+.feedback{min-height:48px;margin-top:10px;padding:11px;border-radius:16px;background:#fff8e7;font-size:13px;font-weight:750}.hidden{display:none!important}
+.progress{height:9px;background:#e8f0ed;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#56d7ad);width:0}
+.map{display:grid;gap:10px}.area{position:relative;padding:15px;border-radius:23px;background:#fff;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}.areaIcon{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;font-size:28px;background:#eff8f4}.area.locked{opacity:.55}.area b{display:block}.area small{color:var(--muted)}
+.collectionGrid,.achGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.collect{background:#fff;border-radius:20px;padding:13px;box-shadow:var(--shadow);min-height:112px}.collect .big{font-size:31px}.collect small{display:block;color:var(--muted);margin-top:4px;line-height:1.35}
+.badge{background:#fff;border-radius:20px;padding:13px;text-align:center;box-shadow:var(--shadow);min-height:135px}.badge.off{opacity:.4}.badge .big{font-size:34px}.badge b{display:block;font-size:12px;margin:6px 0 3px}.badge small{font-size:10px;color:var(--muted)}
+.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:10px}.tab{white-space:nowrap;padding:9px 12px;border-radius:13px;background:#fff;font-weight:800;color:var(--muted)}.tab.active{background:var(--green);color:#fff}
+.modal{position:fixed;inset:0;z-index:100;background:#17352f99;display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modalBox{width:min(440px,100%);background:#fff;border-radius:28px;padding:24px;text-align:center;box-shadow:0 25px 70px #0004;animation:pop .25s}@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}.modalIcon{font-size:55px}.modalBox h2{font-size:26px}.modalBox p{color:var(--muted);line-height:1.45}
+#confetti{position:fixed;inset:0;z-index:110;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);z-index:120;background:#17352f;color:#fff;padding:11px 16px;border-radius:16px;font-weight:800;opacity:0;transition:.25s;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:370px){main{padding:10px}.grid{gap:8px}.gameCard{padding:11px}.stats{gap:5px}.stat{padding:8px 3px}}
+@media(orientation:landscape) and (max-height:600px){#app{max-width:900px}.grid{grid-template-columns:repeat(4,1fr)}main{padding:10px 20px}.hero{padding:14px}.splash{min-height:100dvh}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<canvas id="confetti"></canvas>
+<header id="topbar" class="hidden">
+<button class="hbtn" onclick="goHome()" aria-label="Beranda">⌂</button>
+<div class="playerBadge" onclick="showProfile()"><span id="headAvatar">🧒</span><span id="headName">Pemain</span></div>
+<div class="statPill">⭐ <span id="headStars">0</span></div>
+<button class="hbtn" onclick="toggleSound()" id="soundBtn" aria-label="Suara">🔊</button>
+</header>
+
+<main>
+<section id="welcome" class="view active splash">
+<div class="logoOrb">🌙</div>
+<h1>HIDA ISLAMIC<br>ADVENTURE</h1>
+<p class="subtitle">Belajar • Bermain • Berakhlak</p>
+<div style="width:100%;max-width:360px">
+<input id="nameInput" class="name" maxlength="18" placeholder="Siapa nama kamu?" autocomplete="off">
+<div class="avatarRow">
+<button class="avatarPick selected" data-av="🧒" onclick="pickAvatar(this)">🧒</button>
+<button class="avatarPick" data-av="👦" onclick="pickAvatar(this)">👦</button>
+<button class="avatarPick" data-av="👧" onclick="pickAvatar(this)">👧</button>
+</div>
+<button class="primary" onclick="begin()">🚀 MULAI PETUALANGAN</button>
+</div>
+</section>
+
+<section id="onboard" class="view onboard">
+<div class="logoOrb" style="width:80px;height:80px;font-size:42px">✨</div>
+<h2>Selamat datang di Dunia HIDA!</h2>
+<p class="subtitle">Jelajahi dunia belajar yang penuh misi dan permainan.</p>
+<div class="grid" style="width:100%;max-width:400px;margin:12px 0">
+<div class="gameCard"><div class="icon">📖</div><h3>Al-Qur'an</h3><p>Hijaiyah dan tajwid dasar.</p></div>
+<div class="gameCard"><div class="icon">🕌</div><h3>Ibadah</h3><p>Kenali shalat, wudhu, Ramadan dan haji.</p></div>
+<div class="gameCard wide"><div class="icon">❤️</div><h3>Akhlak Baik</h3><p>Latihan memilih sikap baik dalam kehidupan sehari-hari.</p></div>
+</div>
+<button class="primary" onclick="enterGame()">✨ YUK MULAI!</button>
+</section>
+
+<section id="home" class="view">
+<div class="hero"><h2>🌙 HIDA ISLAMIC ADVENTURE</h2><p id="welcomeText">Yuk jelajahi Dunia HIDA!</p>
+<div class="levelLine"><span id="levelLabel">Level 1 • Pemula</span><span id="xpLabel">0 / 100 XP</span></div><div class="bar"><i id="xpBar"></i></div></div>
+<div class="stats"><div class="stat">⭐<b id="sStars">0</b><small>Bintang</small></div><div class="stat">🔥<b id="sStreak">0</b><small>Streak</small></div><div class="stat">🎯<b id="sCorrect">0</b><small>Benar</small></div><div class="stat">📚<b id="sCollected">0</b><small>Koleksi</small></div></div>
+<button class="primary" onclick="quickPlay()">🎲 MAIN ACAK</button>
+<button class="secondary" onclick="study5()">⏱️ BELAJAR 5 MENIT</button>
+<div class="sectionTitle">🎯 Misi Hari Ini <span id="missionCount" class="mini">0/5</span></div>
+<div class="mission"><div class="mi">🎯</div><div><b id="missionText">Jawab 5 soal dengan benar</b><small id="missionReward">Hadiah: ⭐ 5 + XP 30</small><div class="progress" style="margin-top:7px"><i id="missionBar"></i></div></div></div>
+<div class="sectionTitle">🗺️ Dunia HIDA</div>
+<div class="grid">
+<div class="gameCard" onclick="openArea('quran')"><div class="icon">📖</div><h3>Taman Al-Qur'an</h3><p>Hijaiyah • Harakat • Tajwid</p></div>
+<div class="gameCard" onclick="openArea('ibadah')"><div class="icon">🕌</div><h3>Kota Ibadah</h3><p>Shalat • Wudhu</p></div>
+<div class="gameCard" onclick="openArea('iman')"><div class="icon">🌟</div><h3>Istana Iman</h3><p>Rukun Islam • Rukun Iman</p></div>
+<div class="gameCard" onclick="openArea('ramadan')"><div class="icon">🌙</div><h3>Taman Ramadan</h3><p>Puasa • Adab</p></div>
+<div class="gameCard" onclick="openArea('nabi')"><div class="icon">🌹</div><h3>Jejak Nabi & Rasul</h3><p>25 nabi • Teladan</p></div>
+<div class="gameCard" onclick="openArea('akhlak')"><div class="icon">❤️</div><h3>Taman Akhlak</h3><p>Kebiasaan baik</p></div>
+<div class="gameCard" onclick="openArea('haji')"><div class="icon">🕋</div><h3>Jalan Baitullah</h3><p>Kenalan dengan haji</p></div>
+<div class="gameCard" onclick="openArea('malaikat')"><div class="icon">👼</div><h3>Dunia Malaikat</h3><p>Nama & tugas umum</p></div>
+</div>
+<div class="sectionTitle">🏆 Lainnya</div>
+<div class="grid">
+<div class="gameCard" onclick="showCollection()"><div class="icon">📚</div><h3>Ensiklopedia</h3><p>Kartu ilmu yang ditemukan</p></div>
+<div class="gameCard" onclick="showAchievements()"><div class="icon">🏅</div><h3>Prestasi</h3><p>25+ achievement</p></div>
+<div class="gameCard" onclick="showMap()"><div class="icon">🗺️</div><h3>Peta Perjalanan</h3><p>Lihat progres area</p></div>
+<div class="gameCard" onclick="showParent()"><div class="icon">👨‍👩‍👧</div><h3>Progres</h3><p>Statistik belajar</p></div>
+<div class="gameCard wide" onclick="showSettings()"><div class="icon">⚙️</div><h3>Pengaturan</h3><p>Suara • Animasi • Reset progress</p></div>
+</div>
+</section>
+
+<section id="area" class="view"><button class="back" onclick="goHome()">← Kembali</button><div class="hero" id="areaHero"></div><div class="sectionTitle">🎮 Pilih Permainan</div><div class="grid" id="areaGames"></div></section>
+
+<section id="quiz" class="view"><button class="back" onclick="goHome()">← Beranda</button><div class="lesson"><div class="mini" id="quizCat"></div><h2 id="quizQuestion">Pertanyaan</h2><div class="arabic hidden" id="quizArabic"></div><div class="fact hidden" id="quizIntro"></div></div><div class="choices" id="choices"></div><div id="feedback" class="feedback">Pilih jawaban terbaik.</div><button id="nextBtn" class="primary hidden" onclick="nextQuestion()">➡️ LANJUT</button></section>
+
+<section id="learn" class="view"><button class="back" onclick="goHome()">← Beranda</button><div class="lesson"><div class="mini" id="learnCat"></div><h2 id="learnTitle"></h2><div class="arabic hidden" id="learnArabic"></div><div class="fact" id="learnText"></div><button class="secondary" onclick="speakCurrent()">🔊 Dengarkan</button><button class="primary" onclick="learnAndPlay()">🎮 Coba Latihan</button></div></section>
+
+<section id="collection" class="view"><button class="back" onclick="goHome()">← Beranda</button><h2>📚 ENSIKLOPEDIA HIDA</h2><p class="mini">Kartu yang sudah ditemukan akan tersimpan di perangkat.</p><div class="tabs" id="collectTabs"></div><div class="collectionGrid" id="collectionGrid"></div></section>
+
+<section id="achievements" class="view"><button class="back" onclick="goHome()">← Beranda</button><h2>🏅 PRESTASI HIDA</h2><p class="mini" id="achSummary"></p><div class="achGrid" id="achGrid"></div></section>
+
+<section id="map" class="view"><button class="back" onclick="goHome()">← Beranda</button><h2>🗺️ PETA DUNIA HIDA</h2><p class="mini">Area terbuka mengikuti progres belajar.</p><div class="map" id="mapGrid"></div></section>
+
+<section id="parent" class="view"><button class="back" onclick="goHome()">← Beranda</button><h2>👨‍👩‍👧 PROGRES BELAJAR</h2><div class="grid" id="parentGrid"></div><div class="lesson" style="margin-top:12px;text-align:left"><b>💡 Saran latihan</b><p id="weakText" class="subtitle"></p></div></section>
+
+<section id="settings" class="view"><button class="back" onclick="goHome()">← Beranda</button><h2>⚙️ PENGATURAN</h2><div class="grid">
+<button class="gameCard" onclick="toggleSound()"><div class="icon" id="settingSoundIcon">🔊</div><h3>Suara</h3><p id="settingSound">Aktif</p></button>
+<button class="gameCard" onclick="toggleMotion()"><div class="icon">✨</div><h3>Animasi</h3><p id="settingMotion">Aktif</p></button>
+<button class="gameCard wide" onclick="resetGame()"><div class="icon">🔄</div><h3>Reset Progress</h3><p>Semua progres lokal akan dihapus setelah konfirmasi.</p></button>
+</div></section>
+</main>
+<div id="modal" class="modal"><div class="modalBox"><div class="modalIcon" id="modalIcon">🎉</div><h2 id="modalTitle">HEBAT!</h2><p id="modalText"></p><button class="primary" onclick="closeModal()">🚀 LANJUT</button></div></div>
+<div id="toast" class="toast"></div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================
+   DATA EDUKASI
+========================= */
+const HIJAIYAH=[
+["ا","Alif"],["ب","Ba"],["ت","Ta"],["ث","Tsa"],["ج","Jim"],["ح","Ha"],["خ","Kha"],["د","Dal"],["ذ","Dzal"],["ر","Ra"],["ز","Zai"],
+["س","Sin"],["ش","Syin"],["ص","Shad"],["ض","Dhad"],["ط","Tha"],["ظ","Zha"],["ع","'Ain"],["غ","Ghain"],["ف","Fa"],["ق","Qaf"],
+["ك","Kaf"],["ل","Lam"],["م","Mim"],["ن","Nun"],["ه","Ha"],["و","Wau"],["ي","Ya"]
+];
+const HARAKAT=[
+["بَ","Fathah — bunyi a"],["بِ","Kasrah — bunyi i"],["بُ","Dhammah — bunyi u"],
+["بً","Fathatain — an"],["بٍ","Kasratain — in"],["بٌ","Dhammahtain — un"],
+["بْ","Sukun — tanpa vokal setelah huruf"],["بّ","Tasydid — penekanan/ganda pada huruf"],
+["بَا","Mad — contoh bacaan panjang pada pola dasar"]
+];
+const TAJWID=[
+["Nun sukun","Nun mati (نْ) adalah nun tanpa harakat."],["Tanwin","Tanwin berupa ـً ـٍ ـٌ dan terdengar seperti akhiran n."],
+["Izhar","Pada materi dasar, nun sukun/tanwin dibaca jelas ketika bertemu huruf حلق yang diajarkan."],
+["Idgham","Pada kondisi tertentu, nun sukun/tanwin melebur ke huruf setelahnya."],
+["Ikhfa","Pada kondisi tertentu, nun sukun/tanwin dibaca samar."],
+["Iqlab","Nun sukun/tanwin berubah menjadi bunyi mim ketika bertemu ب."],
+["Mim sukun","Mim mati (مْ) memiliki beberapa hukum bacaan bergantung huruf sesudahnya."],
+["Qalqalah","Pantulan suara pada huruf qalqalah ketika dalam keadaan sukun; hurufnya ق ط ب ج د."],
+["Mad","Mad berkaitan dengan pemanjangan suara pada huruf mad sesuai aturan bacaannya."],
+["Izhar syafawi","Mim sukun dibaca jelas ketika bertemu selain م dan ب dalam kaidah dasar."],
+["Ikhfa syafawi","Mim sukun dibaca samar ketika bertemu ب."],
+["Idgham mimi","Mim sukun bertemu mim sehingga dibaca melebur dengan dengung."],
+["Ghunnah","Dengung adalah karakter bacaan pada kondisi tertentu, termasuk nun dan mim bertasydid."],
+["Lam jalalah","Bacaan lafaz Allah memiliki ketentuan tafkhim/tarqiq berdasarkan harakat sebelumnya."],
+["Ra tafkhim","Ra dibaca tebal pada kondisi tertentu sesuai kaidah tajwid."],
+["Ra tarqiq","Ra dibaca tipis pada kondisi tertentu sesuai kaidah tajwid."],
+["Mad asli","Mad asli/mad thabi'i merupakan pemanjangan dasar dua harakat."],
+["Waqaf","Waqaf berarti berhenti dalam membaca Al-Qur'an sesuai tempat dan tanda yang tepat."],
+["Tanda waqaf","Tanda-tanda waqaf membantu pembaca memahami tempat berhenti atau melanjutkan bacaan."],
+["Adab membaca","Membaca Al-Qur'an dilakukan dengan sikap hormat, menjaga kebersihan dan memperhatikan bacaan."]
+];
+const RUKUN_ISLAM=["Syahadat","Shalat","Zakat","Puasa Ramadan","Haji bagi yang mampu"];
+const RUKUN_IMAN=["Iman kepada Allah","Iman kepada malaikat","Iman kepada kitab-kitab Allah","Iman kepada rasul-rasul Allah","Iman kepada hari akhir","Iman kepada qada dan qadar"];
+const PRAYERS=[
+["Subuh",2,"contoh waktu: menjelang pagi, dimulai setelah terbit fajar"],["Zuhur",4,"contoh waktu: setelah matahari tergelincir"],["Asar",4,"contoh waktu: sore hari"],["Magrib",3,"contoh waktu: setelah matahari terbenam"],["Isya",4,"contoh waktu: malam hari"]
+];
+const WUDHU=[
+["Niat","Membulatkan niat untuk bersuci."],["Membasuh wajah","Membasuh wajah dengan air."],["Membasuh tangan","Membasuh tangan hingga siku."],["Mengusap kepala","Mengusap bagian kepala."],["Membasuh kaki","Membasuh kaki hingga mata kaki."]
+];
+const RAMADAN=[
+["Sahur","Makan dan minum sebelum mulai berpuasa."],["Fajar","Puasa dimulai ketika terbit fajar sesuai waktu setempat."],["Menjaga lisan","Menjaga ucapan dari perkataan buruk."],["Menjaga perilaku","Berusaha melakukan kebaikan dan menjauhi perbuatan buruk."],["Membaca Al-Qur'an","Ramadan dapat menjadi waktu memperbanyak membaca Al-Qur'an."],["Sedekah","Berbagi dan membantu orang lain adalah kebiasaan baik."],["Berbuka","Puasa berakhir setelah matahari terbenam sesuai waktu setempat."],["Tarawih","Shalat malam yang dikerjakan pada bulan Ramadan."],["Zakat fitrah","Zakat yang berkaitan dengan Ramadan dan Idulfitri sesuai ketentuan."],["Adab berbuka","Berbuka dengan tertib dan tidak berlebihan."],
+["Sabar","Ramadan menjadi latihan kesabaran."],["Syukur","Mensyukuri makanan dan nikmat Allah."],["Doa","Berdoa kepada Allah adalah amalan yang baik."],["Silaturahmi","Menjaga hubungan baik dengan keluarga dan sesama."],["Kebersihan","Menjaga kebersihan selama Ramadan."],["Membantu keluarga","Membantu pekerjaan rumah sebagai kebiasaan baik."],["Berbagi makanan","Berbagi makanan kepada orang lain sebagai bentuk kebaikan."],["Menghindari mengejek","Menjaga perasaan orang lain."],["Belajar","Tetap belajar dengan seimbang."],["Tidur cukup","Menjaga istirahat agar aktivitas tetap baik."]
+];
+const HAJJ=[
+["Ka'bah","Bangunan suci di Masjidil Haram yang menjadi arah kiblat umat Islam."],["Ihram","Keadaan khusus untuk memulai rangkaian ibadah haji atau umrah."],
+["Tawaf","Mengelilingi Ka'bah sebanyak tujuh putaran dalam pelaksanaan tawaf."],["Sa'i","Berjalan antara Shafa dan Marwah sebanyak tujuh kali perjalanan."],
+["Wukuf","Berdiam di Arafah pada waktu yang ditentukan dalam haji."],["Arafah","Tempat penting dalam pelaksanaan wukuf."],["Mina","Tempat yang berkaitan dengan rangkaian ibadah haji."],
+["Muzdalifah","Tempat persinggahan jamaah haji dalam rangkaian ibadah haji."],["Masjidil Haram","Masjid suci di Makkah yang mengelilingi Ka'bah."],
+["Baitullah","Sebutan untuk Ka'bah dalam konteks yang umum."],["Haji","Ibadah ke Baitullah yang wajib bagi yang mampu menurut ketentuannya."],
+["Umrah","Ibadah ke Baitullah yang berbeda dari haji dan dapat dilakukan di luar musim haji."],
+["Shafa","Salah satu tempat yang menjadi titik sa'i."],["Marwah","Salah satu tempat yang menjadi titik sa'i."],["Makkah","Kota tempat Masjidil Haram dan Ka'bah berada."]
+];
+const ANGELS=[
+["Jibril","Menyampaikan wahyu kepada para nabi dan rasul."],["Mikail","Dikenal dalam pelajaran Islam berkaitan dengan rezeki dan hujan atas izin Allah."],
+["Israfil","Dikenal berkaitan dengan tiupan sangkakala."],["Malakul Maut","Malaikat yang bertugas mencabut nyawa sesuai ketetapan Allah."],
+["Munkar","Nama malaikat yang dikenal dalam pembelajaran tentang pertanyaan di alam kubur."],["Nakir","Nama malaikat yang dikenal dalam pembelajaran tentang pertanyaan di alam kubur."],
+["Malik","Malaikat yang disebut sebagai penjaga neraka."],["Raqib dan Atid","Sebutan yang umum dalam pelajaran untuk malaikat pencatat amal manusia; penjelasan rinci hendaknya mengikuti sumber yang tepercaya."],
+["Ridwan","Nama yang umum diajarkan dalam materi pendidikan Islam untuk penjaga surga; rincian sumber perlu diperhatikan."],
+["Malaikat","Makhluk Allah yang taat kepada-Nya dan tidak memiliki sifat seperti manusia."]
+];
+const PROPHETS=[
+["Adam","Nabi Adam adalah manusia pertama dan nabi pertama dalam ajaran Islam.","Pelajaran: menaati Allah dan belajar dari kesalahan."],
+["Idris","Nabi Idris disebut dalam Al-Qur'an sebagai nabi yang benar.","Pelajaran: ketekunan dan kebaikan."],
+["Nuh","Nabi Nuh berdakwah kepada kaumnya dalam waktu yang panjang.","Pelajaran: sabar dalam berdakwah."],
+["Hud","Nabi Hud diutus kepada kaum 'Ad.","Pelajaran: tidak sombong dan tetap taat."],
+["Saleh","Nabi Saleh diutus kepada kaum Tsamud.","Pelajaran: menerima kebenaran dan tidak membangkang."],
+["Ibrahim","Nabi Ibrahim menjadi teladan dalam tauhid dan ketaatan.","Pelajaran: teguh dalam beriman."],
+["Lut","Nabi Lut berdakwah kepada kaumnya.","Pelajaran: menjaga kebaikan dan menjauhi kemungkaran."],
+["Ismail","Nabi Ismail dikenal sebagai putra Nabi Ibrahim dan teladan dalam kesabaran serta ketaatan.","Pelajaran: sabar dan taat."],
+["Ishaq","Nabi Ishaq adalah putra Nabi Ibrahim.","Pelajaran: bersyukur atas nikmat Allah."],
+["Ya'qub","Nabi Ya'qub juga dikenal sebagai Israel.","Pelajaran: sabar dan berharap kepada Allah."],
+["Yusuf","Nabi Yusuf dikenal melalui kisah kesabaran, ujian, dan pengampunan.","Pelajaran: menjaga diri dan memaafkan."],
+["Ayyub","Nabi Ayyub menjadi teladan dalam kesabaran menghadapi ujian.","Pelajaran: sabar dan tetap berdoa."],
+["Syu'aib","Nabi Syu'aib berdakwah kepada kaumnya agar jujur dalam bermuamalah.","Pelajaran: jujur dan adil."],
+["Musa","Nabi Musa berdakwah kepada Fir'aun dan membimbing Bani Israil.","Pelajaran: berani menyampaikan kebenaran dengan pertolongan Allah."],
+["Harun","Nabi Harun adalah saudara Nabi Musa dan mendampinginya dalam dakwah.","Pelajaran: membantu dalam kebaikan."],
+["Zulkifli","Nabi Zulkifli termasuk 25 nabi yang umum diajarkan dalam pendidikan Islam di Indonesia.","Pelajaran: sabar dan menepati kebaikan."],
+["Daud","Nabi Daud menerima Zabur dan dikenal sebagai nabi sekaligus raja.","Pelajaran: adil dan banyak bersyukur."],
+["Sulaiman","Nabi Sulaiman dikenal sebagai nabi dan raja yang diberi berbagai karunia.","Pelajaran: menggunakan nikmat dengan syukur."],
+["Ilyas","Nabi Ilyas berdakwah kepada kaumnya agar menyembah Allah.","Pelajaran: teguh dalam tauhid."],
+["Ilyasa","Nabi Ilyasa termasuk nabi yang disebut dalam Al-Qur'an.","Pelajaran: berbuat baik dan mengikuti jalan kebenaran."],
+["Yunus","Nabi Yunus mengalami ujian dan kemudian memohon ampun kepada Allah.","Pelajaran: tidak berputus asa dari rahmat Allah."],
+["Zakaria","Nabi Zakaria berdoa kepada Allah memohon keturunan.","Pelajaran: terus berdoa dan berharap kepada Allah."],
+["Yahya","Nabi Yahya adalah putra Nabi Zakaria.","Pelajaran: menjaga kesucian dan ketakwaan."],
+["Isa","Nabi Isa adalah putra Maryam dan seorang rasul Allah.","Pelajaran: beriman kepada Allah dan mengikuti petunjuk-Nya."],
+["Muhammad ﷺ","Nabi Muhammad ﷺ adalah nabi dan rasul terakhir.","Pelajaran: jujur, amanah, penyayang, sabar, dan berakhlak mulia."]
+];
+const AKHLAK=[
+["Jujur","Mengatakan sesuatu sesuai kenyataan."],["Amanah","Menjaga kepercayaan yang diberikan."],["Sabar","Menahan diri dan tetap melakukan kebaikan."],["Syukur","Mengakui dan berterima kasih atas nikmat Allah."],["Rendah hati","Tidak sombong ketika memiliki kelebihan."],["Menjaga kebersihan","Menjaga diri dan lingkungan tetap bersih."],["Menolong","Membantu orang lain dalam kebaikan."],["Berbagi","Mau berbagi sesuai kemampuan."],["Meminta maaf","Berani mengakui kesalahan dan meminta maaf."],["Memaafkan","Belajar melepaskan rasa marah dan memaafkan."],["Berkata baik","Memilih kata yang sopan dan bermanfaat."],["Menjaga lisan","Tidak menyebarkan ejekan atau perkataan buruk."],["Tidak mengejek","Menghormati perasaan orang lain."],["Menghormati guru","Mendengarkan dan berbicara dengan sopan."],["Berbakti kepada orang tua","Membantu dan berbicara lembut kepada orang tua."],["Menyayangi saudara","Tidak merebut dan mau membantu."],["Menyayangi teman","Berteman dengan baik dan tidak membully."],["Meminta izin","Meminta izin sebelum menggunakan milik orang lain."],["Mengucapkan salam","Menyapa dengan salam."],["Mengucapkan terima kasih","Menghargai bantuan orang lain."],["Menepati janji","Berusaha melakukan janji yang baik."],["Tidak berbohong","Menghindari kebohongan."],["Tidak membully","Tidak menyakiti atau merendahkan teman."],["Mengantre","Menunggu giliran dengan tertib."],["Merapikan barang","Mengembalikan barang pada tempatnya."],["Menjaga amanah","Tidak menyalahgunakan titipan."],["Bersikap adil","Tidak pilih kasih dan berusaha adil."],["Mendengarkan","Memberi perhatian ketika orang lain berbicara."],["Mengendalikan marah","Berusaha tenang dan tidak menyakiti orang lain."],["Bersikap lembut","Berbicara dengan cara yang tidak kasar."]
+];
+const ADAB=[
+["Basmalah sebelum makan","Membiasakan menyebut nama Allah sebelum makan."],["Tangan kanan saat makan","Mengikuti adab makan yang diajarkan dalam sunnah."],["Hamdalah setelah makan","Bersyukur kepada Allah setelah makan."],["Salam","Membiasakan mengucapkan salam ketika bertemu."],["Doa sebelum tidur","Membaca doa tidur yang bersumber dari ajaran yang tepercaya."],["Doa bangun","Membaca doa bangun yang bersumber dari ajaran yang tepercaya."],["Adab kamar mandi","Menjaga kebersihan dan menggunakan adab yang diajarkan."],["Keluar rumah","Berdoa dan bertawakal kepada Allah sesuai ajaran yang tepercaya."],["Masuk rumah","Mengucapkan salam dan menjaga adab."],["Bersin","Menjaga adab bersin dan menjawab orang yang bersin sesuai sunnah."],["Menjenguk orang sakit","Mendoakan dan memberi semangat dengan sopan."],["Menjaga masjid","Menjaga kebersihan dan ketenangan masjid."],["Membaca Al-Qur'an","Membaca dengan hormat dan berusaha memperbaiki bacaan."],["Sedekah","Memberikan sesuatu untuk kebaikan sesuai kemampuan."],["Membantu keluarga","Membantu pekerjaan rumah dengan senang hati."],["Menghormati orang tua","Berbicara lembut dan membantu."],["Menghormati guru","Mendengarkan pelajaran dan berbicara sopan."],["Tidak berlebihan","Menggunakan makanan dan barang secukupnya."],["Menjaga kebersihan","Kebersihan adalah kebiasaan baik yang perlu dijaga."],["Menutup aurat","Berpakaian sopan sesuai ajaran Islam dan usia."],["Menjaga pandangan","Membiasakan diri melihat hal-hal yang baik."],["Menjaga rahasia","Tidak menyebarkan hal pribadi yang dipercayakan."],["Mengembalikan barang","Mengembalikan barang pinjaman dengan baik."],["Meminta izin","Meminta izin ketika masuk atau memakai sesuatu milik orang lain."],["Bersyukur","Mengucapkan syukur dan menggunakan nikmat untuk kebaikan."],["Berdoa","Meminta pertolongan kepada Allah."],["Belajar","Belajar dengan sungguh-sungguh sebagai kebiasaan baik."],["Tidur teratur","Menjaga waktu istirahat agar tubuh siap beraktivitas."],["Berbagi makanan","Berbagi dengan keluarga atau teman dengan sopan."],["Menyapa dengan ramah","Membuat orang lain merasa dihargai."]
+];
+
+const AREAS={
+quran:{icon:"📖",title:"Taman Al-Qur'an",desc:"Hijaiyah, harakat, tanda baca, dan tajwid.",color:"#e9fff7"},
+ibadah:{icon:"🕌",title:"Kota Ibadah",desc:"Shalat, rakaat, waktu shalat, dan wudhu.",color:"#eef5ff"},
+iman:{icon:"🌟",title:"Istana Iman",desc:"Rukun Islam dan Rukun Iman.",color:"#fff6df"},
+ramadan:{icon:"🌙",title:"Taman Ramadan",desc:"Puasa, sahur, berbuka, dan kebiasaan baik.",color:"#f3efff"},
+nabi:{icon:"🌹",title:"Jejak Nabi & Rasul",desc:"Mengenal 25 nabi dan pelajaran akhlaknya.",color:"#fff0f5"},
+akhlak:{icon:"❤️",title:"Taman Akhlak",desc:"Latihan sikap baik dalam kehidupan sehari-hari.",color:"#fff0f0"},
+haji:{icon:"🕋",title:"Jalan Baitullah",desc:"Mengenal istilah dasar haji dan umrah.",color:"#fff9e7"},
+malaikat:{icon:"👼",title:"Dunia Malaikat",desc:"Nama dan tugas yang umum diajarkan.",color:"#eef9ff"}
+};
+
+/* 200+ content entries: source arrays + generated learning cards */
+const ALL_CONTENT=[];
+function addContent(cat,arr){arr.forEach((x,i)=>ALL_CONTENT.push({id:cat+"_"+i,cat,title:x[0],text:x[1],extra:x[2]||""}))}
+addContent("Hijaiyah",HIJAIYAH.map(x=>[x[1],"Huruf Arab: "+x[0],x[0]]));
+addContent("Harakat",HARAKAT.map(x=>[x[0],x[1],x[0]]));
+addContent("Tajwid",TAJWID);
+addContent("Rukun Islam",RUKUN_ISLAM.map(x=>[x,"Bagian dari lima Rukun Islam."]));
+addContent("Rukun Iman",RUKUN_IMAN.map(x=>[x,"Bagian dari enam Rukun Iman."]));
+addContent("Shalat",PRAYERS.map(x=>[x[0],x[1]+" rakaat. "+x[2]]));
+addContent("Wudhu",WUDHU);
+addContent("Ramadan",RAMADAN);
+addContent("Haji",HAJJ);
+addContent("Malaikat",ANGELS);
+addContent("Nabi & Rasul",PROPHETS.map(x=>[x[0],x[1],x[2]]));
+addContent("Akhlak",AKHLAK);
+addContent("Sunnah & Adab",ADAB);
+
+/* State */
+const KEY="hida_islamic_adventure_v1";
+let state={
+ name:"",avatar:"🧒",level:1,xp:0,stars:0,totalGames:0,correct:0,answered:0,streak:0,lastDay:"",
+ sound:true,motion:true,collection:[],achievements:[],daily:{date:"",type:"correct",target:5,progress:0},
+ catStats:{},onboard:false
+};
+let currentView="welcome", currentQuestion=null, currentLearn=null, selectedAvatar="🧒", studyQueue=[], studyIndex=0;
+let audioCtx=null;
+
+function loadState(){
+ try{const raw=localStorage.getItem(KEY);if(raw)state=Object.assign(state,JSON.parse(raw));}
+ catch(e){}
+}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function today(){return new Date().toISOString().slice(0,10)}
+function setupDaily(){
+ const d=today();
+ if(state.daily.date!==d){
+   const types=[
+    ["correct",5,"Jawab 5 soal dengan benar"],["learn",3,"Pelajari 3 materi"],
+    ["games",2,"Selesaikan 2 permainan"],["collect",3,"Temukan 3 materi baru"]
+   ];
+   const t=types[Math.floor(Math.random()*types.length)];
+   state.daily={date:d,type:t[0],target:t[1],progress:0};
+   if(state.lastDay){
+     const a=new Date(state.lastDay),b=new Date(d),diff=Math.round((b-a)/86400000);
+     if(diff===1)state.streak++;
+     else if(diff>1)state.streak=1;
+   }else state.streak=1;
+   state.lastDay=d;saveState();
+ }
+}
+function init(){loadState();setupDaily();updateHeader();if(state.name){showView("home");}else showView("welcome")}
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(id).classList.add("active");currentView=id;window.scrollTo(0,0);updateHeader()}
+function updateHeader(){
+ const top=document.getElementById("topbar");
+ top.classList.toggle("hidden",!state.name||currentView==="welcome"||currentView==="onboard");
+ document.getElementById("headName").textContent=state.name||"Pemain";document.getElementById("headAvatar").textContent=state.avatar;
+ document.getElementById("headStars").textContent=state.stars;document.getElementById("soundBtn").textContent=state.sound?"🔊":"🔇";
+ if(document.getElementById("home").classList.contains("active"))updateHome();
+}
+function pickAvatar(el){document.querySelectorAll(".avatarPick").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");selectedAvatar=el.dataset.av}
+function begin(){
+ const n=document.getElementById("nameInput").value.trim();
+ if(!n){toast("Tulis nama panggilan dulu 😊");return}
+ state.name=n;state.avatar=selectedAvatar;saveState();showView("onboard")
+}
+function enterGame(){state.onboard=true;saveState();showView("home");sound("level")}
+function goHome(){showView("home")}
+function updateHome(){
+ const need=levelNeed(state.level),cur=state.xp%need;
+ document.getElementById("welcomeText").textContent=`Halo ${state.name}! Yuk jelajahi Dunia HIDA ✨`;
+ document.getElementById("levelLabel").textContent=`Level ${state.level} • ${levelTitle(state.level)}`;
+ document.getElementById("xpLabel").textContent=`${cur} / ${need} XP`;document.getElementById("xpBar").style.width=Math.min(100,cur/need*100)+"%";
+ document.getElementById("sStars").textContent=state.stars;document.getElementById("sStreak").textContent=state.streak;document.getElementById("sCorrect").textContent=state.correct;
+ document.getElementById("sCollected").textContent=state.collection.length;
+ const d=state.daily;document.getElementById("missionText").textContent=d.type==="correct"?"Jawab 5 soal dengan benar":d.type==="learn"?"Pelajari 3 materi":d.type==="games"?"Selesaikan 2 permainan":"Temukan 3 materi baru";
+ document.getElementById("missionCount").textContent=`${Math.min(d.progress,d.target)}/${d.target}`;document.getElementById("missionBar").style.width=Math.min(100,d.progress/d.target*100)+"%";
+}
+function levelNeed(l){return 100+Math.floor((l-1)/5)*20}
+function levelTitle(l){if(l>=50)return"Master HIDA";if(l>=40)return"Penjelajah Baitullah";if(l>=30)return"Sahabat Ramadan";if(l>=20)return"Pejuang Kebaikan";if(l>=10)return"Penjelajah Ibadah";if(l>=5)return"Sahabat Al-Qur'an";return"Pemula"}
+function addXP(n){
+ const before=state.level;state.xp+=n;
+ while(state.level<50 && state.xp>=totalForLevel(state.level+1))state.level++;
+ if(state.level>before){sound("level");modal("🚀","LEVEL UP!",`Kamu mencapai Level ${state.level}. Ini adalah progres belajar dalam game, bukan ukuran kesalehan. 💚`);confetti()}
+ saveState();updateHeader();
+}
+function totalForLevel(l){let sum=0;for(let i=1;i<l;i++)sum+=levelNeed(i);return sum}
+function addStars(n){state.stars+=n;saveState();updateHeader()}
+function daily(type,amount=1){
+ if(state.daily.type===type&&!dailyDone()){state.daily.progress=Math.min(state.daily.target,state.daily.progress+amount);if(dailyDone()){addXP(30);addStars(5);modal("🎁","MISI SELESAI!", "Hebat! Kamu menyelesaikan misi hari ini. Yuk mulai lagi besok. 💚");}saveState()}
+}
+function dailyDone(){return state.daily.progress>=state.daily.target}
+function collect(id){
+ if(!state.collection.includes(id)){state.collection.push(id);addStars(1);daily("collect");checkAchievements();saveState();return true}return false
+}
+function checkAchievements(){
+ const n=state.achievements;
+ const checks=[
+ ["first","🌱","Langkah Pertama","Memainkan permainan pertama",state.totalGames>=1],
+ ["hijaiyah","🔤","Kenal Hijaiyah","Menemukan 10 kartu Hijaiyah",countCat("Hijaiyah")>=10],
+ ["quran","📖","Sahabat Al-Qur'an","Menemukan 20 kartu Al-Qur'an",countCat("Hijaiyah")+countCat("Harakat")+countCat("Tajwid")>=20],
+ ["tajwid","📚","Penjelajah Tajwid","Menemukan 10 kartu Tajwid",countCat("Tajwid")>=10],
+ ["islam","🌟","Kenal Rukun Islam","Menemukan semua Rukun Islam",countCat("Rukun Islam")>=5],
+ ["iman","⭐","Kenal Rukun Iman","Menemukan semua Rukun Iman",countCat("Rukun Iman")>=6],
+ ["prayer","🕌","Sahabat Shalat","Menemukan 5 kartu shalat",countCat("Shalat")>=5],
+ ["wudhu","💧","Jago Wudhu","Menemukan 5 kartu wudhu",countCat("Wudhu")>=5],
+ ["ramadan","🌙","Penjelajah Ramadan","Menemukan 10 kartu Ramadan",countCat("Ramadan")>=10],
+ ["hajj","🕋","Mengenal Baitullah","Menemukan 8 kartu haji",countCat("Haji")>=8],
+ ["angel","👼","Kenal Malaikat","Menemukan 7 kartu malaikat",countCat("Malaikat")>=7],
+ ["prophet","🌹","Jejak Nabi","Menemukan 10 kartu nabi",countCat("Nabi & Rasul")>=10],
+ ["rasul","✨","25 Nabi & Rasul","Menemukan 25 kartu nabi",countCat("Nabi & Rasul")>=25],
+ ["akhlak","❤️","Anak Berakhlak","Menemukan 15 kartu akhlak",countCat("Akhlak")>=15],
+ ["adab","🌟","Kebiasaan Baik","Menemukan 15 kartu adab",countCat("Sunnah & Adab")>=15],
+ ["games10","🎮","10 Kali Bermain","Menyelesaikan 10 permainan",state.totalGames>=10],
+ ["games50","🏆","Penjelajah HIDA","Menyelesaikan 50 permainan",state.totalGames>=50],
+ ["correct25","🎯","Tepat Sasaran","25 jawaban benar",state.correct>=25],
+ ["correct100","💫","Seratus Jawaban","100 jawaban benar",state.correct>=100],
+ ["level5","🌱","Naik Level","Mencapai Level 5",state.level>=5],
+ ["level10","🕌","Petualang Ibadah","Mencapai Level 10",state.level>=10],
+ ["level20","🌟","Pejuang Kebaikan","Mencapai Level 20",state.level>=20],
+ ["streak7","🔥","Seminggu Konsisten","Streak 7 hari",state.streak>=7],
+ ["collection50","📚","Kolektor Ilmu","Menemukan 50 kartu",state.collection.length>=50],
+ ["master","👑","Master HIDA","Mencapai Level 50",state.level>=50]
+ ];
+ let newly=[];
+ checks.forEach(x=>{if(x[4]&&!n.includes(x[0])){n.push(x[0]);newly.push(x)}})
+ if(newly.length){newly.forEach(()=>{addStars(3)});modal("🏅","PRESTASI TERBUKA!",newly.map(x=>`${x[1]} ${x[2]}`).join(" • "));confetti()}
+ saveState()
+}
+function countCat(c){return state.collection.filter(id=>id.startsWith(c+"_"+)).length}
+
+/* Areas */
+function openArea(id){
+ const a=AREAS[id];document.getElementById("areaHero").innerHTML=`<h2>${a.icon} ${a.title}</h2><p>${a.desc}</p>`;
+ const games=[];
+ if(id==="quran")games.push(["🔤","Hijaiyah Hunt","Cari huruf dan kenali namanya",()=>startQuiz("hijaiyah")],["🧠","Memory Islam","Pasangkan istilah Al-Qur'an",()=>startQuiz("tajwid")],["📖","Tajwid Challenge","Pilih hukum bacaan dasar",()=>startQuiz("tajwid")],["✨","Belajar Cepat","Kenalkan satu kartu baru",()=>openLearn("Hijaiyah")]);
+ if(id==="ibadah")games.push(["🕌","Berapa Rakaat?","Tebak jumlah rakaat shalat wajib",()=>startQuiz("prayer")],["💧","Wudhu Race","Urutkan langkah wudhu",()=>startQuiz("wudhu")],["⏰","Waktu Shalat","Kenali bagian waktu secara umum",()=>startQuiz("prayerTime")],["🧠","Benar atau Salah","Uji pengetahuan ibadah",()=>startQuiz("prayer")]);
+ if(id==="iman")games.push(["🌟","Susun Rukun Islam","Kenali lima rukun",()=>startQuiz("islam")],["⭐","Susun Rukun Iman","Kenali enam rukun",()=>startQuiz("iman")],["🧠","Memory Iman","Pasangkan konsep iman",()=>startQuiz("iman")],["🎯","Kuis Iman","Tantangan campuran",()=>startQuiz("iman")]);
+ if(id==="ramadan")games.push(["🌙","Ramadan Adventure","Pilih kebiasaan yang sesuai",()=>startQuiz("ramadan")],["⏰","Ramadan Clock","Pahami fajar & matahari terbenam",()=>startQuiz("ramadanTime")],["🎯","Benar atau Salah","Uji pengetahuan Ramadan",()=>startQuiz("ramadan")],["📖","Kartu Ramadan","Pelajari kartu baru",()=>openLearn("Ramadan")]);
+ if(id==="nabi")games.push(["🌹","Siapa Dia?","Tebak nabi dari petunjuk",()=>startQuiz("prophet")],["🧠","Memory Nabi","Pasangkan nama dan teladan",()=>startQuiz("prophet")],["📚","Kartu Nabi","Baca ringkasan singkat",()=>openLearn("Nabi & Rasul")],["🎯","Nabi Challenge","Kuis 25 nabi dan rasul",()=>startQuiz("prophet")]);
+ if(id==="akhlak")games.push(["❤️","Mana yang Baik?","Pilih perilaku terbaik",()=>startQuiz("akhlak")],["🎭","Situasi Harian","Apa yang sebaiknya dilakukan?",()=>startQuiz("akhlak")],["🤝","Teman Baik","Latihan adab kepada saudara & teman",()=>startQuiz("adab")],["🏡","Anak Hebat","Kebiasaan baik di rumah",()=>startQuiz("akhlak")]);
+ if(id==="haji")games.push(["🕋","Petualangan Baitullah","Kenali istilah haji",()=>startQuiz("hajj")],["🗺️","Susun Perjalanan","Pahami tempat-tempat penting",()=>startQuiz("hajj")],["📚","Kartu Haji","Pelajari istilah dasar",()=>openLearn("Haji")],["🎯","Haji Challenge","Kuis pengetahuan dasar",()=>startQuiz("hajj")]);
+ if(id==="malaikat")games.push(["👼","Siapa Dia?","Tebak malaikat dari petunjuk",()=>startQuiz("angel")],["🧠","Memory Malaikat","Pasangkan nama dan tugas",()=>startQuiz("angel")],["📚","Kartu Malaikat","Pelajari ringkasan",()=>openLearn("Malaikat")],["🎯","Angel Challenge","Kuis campuran",()=>startQuiz("angel")]);
+ document.getElementById("areaGames").innerHTML=games.map((g,i)=>`<button class="gameCard ${i===3?'wide':''}" id="g${i}"><div class="icon">${g[0]}</div><h3>${g[1]}</h3><p>${g[2]}</p></button>`).join("");
+ games.forEach((g,i)=>document.getElementById("g"+i).onclick=g[3]);
+ showView("area")
+}
+
+/* Quiz generator */
+function arrShuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function uniqueOptions(correct,pool,n=4){let vals=arrShuffle(pool.filter(x=>x!==correct)).slice(0,n-1);if(!vals.includes(correct))vals.push(correct);return arrShuffle(vals)}
+function makeQuestion(type){
+ let q={type,category:"",question:"",options:[],answer:"",explanation:"",arabic:""};
+ if(type==="hijaiyah"){let x=rand(HIJAIYAH);q.category="Hijaiyah";q.question=`Apa nama huruf ini?`;q.arabic=x[0];q.answer=x[1];q.options=uniqueOptions(x[1],HIJAIYAH.map(z=>z[1]));q.explanation=`Huruf ${x[0]} bernama ${x[1]}.`}
+ else if(type==="tajwid"){let x=rand(TAJWID);q.category="Tajwid";q.question=`Manakah yang tepat tentang "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],TAJWID.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="islam"){let i=Math.floor(Math.random()*RUKUN_ISLAM.length);let x=RUKUN_ISLAM[i];q.category="Rukun Islam";q.question=`Rukun Islam yang ke-${i+1} adalah ...`;q.answer=x;q.options=uniqueOptions(x,RUKUN_ISLAM);q.explanation=`Urutannya: ${RUKUN_ISLAM.join(" • ")}.`}
+ else if(type==="iman"){let i=Math.floor(Math.random()*RUKUN_IMAN.length);let x=RUKUN_IMAN[i];q.category="Rukun Iman";q.question=`Yang termasuk Rukun Iman adalah ...`;q.answer=x;q.options=uniqueOptions(x,RUKUN_IMAN);q.explanation=`Ada enam Rukun Iman: ${RUKUN_IMAN.join(" • ")}.`}
+ else if(type==="prayer"){let x=rand(PRAYERS);q.category="Shalat";q.question=`Shalat ${x[0]} berapa rakaat?`;q.answer=String(x[1]);q.options=uniqueOptions(String(x[1]),["2","3","4","5"]);q.explanation=`Shalat ${x[0]} terdiri dari ${x[1]} rakaat.`}
+ else if(type==="prayerTime"){let x=rand(PRAYERS);q.category="Shalat";q.question=`Bagian waktu yang sesuai untuk ${x[0]} adalah ...`;q.answer=x[2];q.options=uniqueOptions(x[2],PRAYERS.map(z=>z[2]));q.explanation="Waktu shalat mengikuti masuknya waktu yang ditetapkan dan berbeda menurut lokasi serta tanggal. Pilihan di sini adalah contoh bagian waktu."}
+ else if(type==="wudhu"){let x=rand(WUDHU);q.category="Wudhu";q.question=`Manakah pernyataan yang sesuai dengan langkah "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],WUDHU.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="ramadan"){let x=rand(RAMADAN);q.category="Ramadan";q.question=`Manakah yang tepat tentang "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],RAMADAN.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="ramadanTime"){let data=[["Fajar","Awal waktu puasa"],["Matahari terbenam","Waktu berbuka"],["Siang","Masih dalam rentang puasa"],["Malam","Setelah matahari terbenam"]];let x=rand(data);q.category="Ramadan";q.question=`Apa yang tepat tentang "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],data.map(z=>z[1]));q.explanation="Waktu nyata mengikuti lokasi dan tanggal. Game memakai konsep umum, bukan jam universal."}
+ else if(type==="prophet"){let x=rand(PROPHETS);q.category="Nabi & Rasul";q.question=`Siapakah yang sesuai dengan petunjuk ini?`;q.answer=x[0];q.options=uniqueOptions(x[0],PROPHETS.map(z=>z[0]));q.explanation=`${x[1]} ${x[2]}`}
+ else if(type==="angel"){let x=rand(ANGELS);q.category="Malaikat";q.question=`Manakah penjelasan yang sesuai dengan "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],ANGELS.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="akhlak"){let x=rand(AKHLAK);q.category="Akhlak";q.question=`Apa contoh yang sesuai dengan "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],AKHLAK.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="adab"){let x=rand(ADAB);q.category="Sunnah & Adab";q.question=`Apa yang tepat tentang "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],ADAB.map(z=>z[1]));q.explanation=x[1]}
+ else if(type==="hajj"){let x=rand(HAJJ);q.category="Haji";q.question=`Apa yang dimaksud "${x[0]}"?`;q.answer=x[1];q.options=uniqueOptions(x[1],HAJJ.map(z=>z[1]));q.explanation=x[1]}
+ return q
+}
+function chooseType(){
+ const types=["hijaiyah","tajwid","islam","iman","prayer","prayerTime","wudhu","ramadan","ramadanTime","prophet","angel","akhlak","adab","hajj"];
+ const weighted=[];
+ Object.entries(state.catStats||{}).forEach(([k,v])=>{if(v&&v.wrong>v.correct)for(let i=0;i<3;i++)weighted.push(v.type||"akhlak")});
+ return weighted.length&&Math.random()<.45?rand(weighted):rand(types)
+}
+function startQuiz(type){state.totalGames++;daily("games");checkAchievements();currentQuestion=makeQuestion(type||chooseType());renderQuestion();showView("quiz");sound("click")}
+function renderQuestion(){
+ const q=currentQuestion;document.getElementById("quizCat").textContent=q.category;
+ document.getElementById("quizQuestion").textContent=q.question;
+ const ar=document.getElementById("quizArabic");ar.classList.toggle("hidden",!q.arabic);ar.textContent=q.arabic||"";
+ const intro=document.getElementById("quizIntro");intro.classList.add("hidden");
+ const box=document.getElementById("choices");box.innerHTML="";document.getElementById("feedback").textContent="Pilih jawaban terbaik.";document.getElementById("nextBtn").classList.add("hidden");
+ q.options.forEach(opt=>{let b=document.createElement("button");b.className="choice";b.textContent=opt;b.onclick=()=>answerQuestion(opt,b);box.appendChild(b)})
+}
+function answerQuestion(opt,btn){
+ const q=currentQuestion;document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
+ const ok=opt===q.answer;btn.classList.add(ok?"correct":"wrong");state.answered++;
+ state.catStats[q.category]=state.catStats[q.category]||{correct:0,wrong:0,type:guessType(q.category)};state.catStats[q.category][ok?"correct":"wrong"]++;
+ const fb=document.getElementById("feedback");
+ if(ok){state.correct++;addXP(20);addStars(1);daily("correct");fb.textContent=rand(["🎉 Hebat!","🌟 MasyaAllah!","👏 Pintar!","🚀 Luar biasa!","💚 Bagus sekali!"]);sound("correct");confetti()}
+ else{addXP(5);fb.textContent=`💡 Belum tepat. Yuk ingat lagi! ${q.explanation}`;sound("wrong")}
+ collectFromQuestion(q);checkAchievements();saveState();document.getElementById("nextBtn").classList.remove("hidden");updateHeader()
+}
+function guessType(cat){const m={"Hijaiyah":"hijaiyah","Harakat":"hijaiyah","Tajwid":"tajwid","Rukun Islam":"islam","Rukun Iman":"iman","Shalat":"prayer","Wudhu":"wudhu","Ramadan":"ramadan","Haji":"hajj","Malaikat":"angel","Nabi & Rasul":"prophet","Akhlak":"akhlak","Sunnah & Adab":"adab"};return m[cat]||"akhlak"}
+function collectFromQuestion(q){
+ const candidates=ALL_CONTENT.filter(x=>x.cat===q.category);
+ if(candidates.length){const x=rand(candidates);collect(x.id)}
+}
+function nextQuestion(){currentQuestion=makeQuestion(chooseType());renderQuestion();sound("click")}
+
+/* Learn */
+function openLearn(cat){
+ let list=ALL_CONTENT.filter(x=>x.cat===cat);if(!list.length)return;
+ const locked=list.filter(x=>!state.collection.includes(x.id));currentLearn=rand(locked.length?locked:list);
+ const x=currentLearn;document.getElementById("learnCat").textContent=x.cat;document.getElementById("learnTitle").textContent=x.title;
+ const ar=document.getElementById("learnArabic");ar.classList.toggle("hidden",!x.extra);ar.textContent=x.extra||"";
+ document.getElementById("learnText").innerHTML=`${escapeHTML(x.text)}${x.extra&&x.cat==="Hijaiyah"?`<br><br><b>🔊 Nama:</b> ${escapeHTML(x.title)}`:""}<br><br><span class="mini">Tahukah kamu? Materi disajikan singkat agar mudah dipelajari dan diulang.</span>`;
+ collect(x.id);daily("learn");saveState();showView("learn")
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function speakCurrent(){if(currentLearn)speak((currentLearn.extra?currentLearn.extra+" — ":"")+currentLearn.title+". "+currentLearn.text)}
+function learnAndPlay(){startQuiz(guessType(currentLearn.cat))}
+function quickPlay(){startQuiz(chooseType())}
+function study5(){
+ studyQueue=arrShuffle(["hijaiyah","tajwid","prayer","islam","iman","ramadan","prophet","angel","akhlak","adab","hajj"]).slice(0,3);studyIndex=0;
+ currentQuestion=makeQuestion(studyQueue[0]);renderQuestion();showView("quiz");toast("Sesi 5 menit dimulai: 3 soal + latihan singkat! ⏱️")
+}
+
+/* Collection */
+function showCollection(){
+ const cats=[...new Set(ALL_CONTENT.map(x=>x.cat))];document.getElementById("collectTabs").innerHTML=`<button class="tab active" onclick="renderCollection()">Semua</button>`+cats.map(c=>`<button class="tab" onclick="renderCollection('${escapeAttr(c)}')">${escapeHTML(c)}</button>`).join("");
+ renderCollection();showView("collection")
+}
+function escapeAttr(s){return String(s).replace(/'/g,"&#39;")}
+function renderCollection(cat){
+ const list=cat?ALL_CONTENT.filter(x=>x.cat===cat):ALL_CONTENT;const box=document.getElementById("collectionGrid");
+ box.innerHTML=list.slice(0,160).map(x=>{const u=state.collection.includes(x.id);return `<div class="collect ${u?'':'locked'}"><div class="big">${u?(x.extra||"✨"):"❓"}</div><b>${u?escapeHTML(x.title):"Belum ditemukan"}</b><small>${u?escapeHTML(x.text):"Main dan belajar untuk membuka kartu ini."}</small></div>`}).join("");
+}
+function showAchievements(){
+ const defs=[
+ ["first","🌱","Langkah Pertama","Main pertama kali"],["hijaiyah","🔤","Kenal Hijaiyah","10 kartu Hijaiyah"],["quran","📖","Sahabat Al-Qur'an","20 kartu Al-Qur'an"],["tajwid","📚","Penjelajah Tajwid","10 kartu Tajwid"],["islam","🌟","Kenal Rukun Islam","Semua Rukun Islam"],["iman","⭐","Kenal Rukun Iman","Semua Rukun Iman"],["prayer","🕌","Sahabat Shalat","5 kartu shalat"],["wudhu","💧","Jago Wudhu","5 kartu wudhu"],["ramadan","🌙","Penjelajah Ramadan","10 kartu Ramadan"],["hajj","🕋","Mengenal Baitullah","8 kartu haji"],["angel","👼","Kenal Malaikat","7 kartu malaikat"],["prophet","🌹","Jejak Nabi","10 kartu nabi"],["rasul","✨","25 Nabi & Rasul","25 kartu nabi"],["akhlak","❤️","Anak Berakhlak","15 kartu akhlak"],["adab","🌟","Kebiasaan Baik","15 kartu adab"],["games10","🎮","10 Kali Bermain","10 permainan"],["games50","🏆","Penjelajah HIDA","50 permainan"],["correct25","🎯","Tepat Sasaran","25 benar"],["correct100","💫","Seratus Jawaban","100 benar"],["level5","🌱","Naik Level","Level 5"],["level10","🕌","Petualang Ibadah","Level 10"],["level20","🌟","Pejuang Kebaikan","Level 20"],["streak7","🔥","Seminggu Konsisten","Streak 7"],["collection50","📚","Kolektor Ilmu","50 kartu"],["master","👑","Master HIDA","Level 50"]
+ ];
+ document.getElementById("achSummary").textContent=`${state.achievements.length} / ${defs.length} prestasi terbuka`;
+ document.getElementById("achGrid").innerHTML=defs.map(x=>`<div class="badge ${state.achievements.includes(x[0])?'':'off'}"><div class="big">${x[1]}</div><b>${x[2]}</b><small>${x[3]}</small></div>`).join("");
+ showView("achievements")
+}
+function showMap(){
+ const unlock={quran:1,iman:3,ibadah:5,ramadan:10,malaikat:12,nabi:15,haji:20,akhlak:1};
+ document.getElementById("mapGrid").innerHTML=Object.entries(AREAS).map(([id,a])=>{const open=state.level>=unlock[id];return `<div class="area ${open?'':'locked'}"><div class="areaIcon">${open?a.icon:"🔒"}</div><div><b>${a.title}</b><small> ${open?"Terbuka":"Terbuka mulai Level "+unlock[id]}</small></div></div>`}).join("");
+ showView("map")
+}
+function showParent(){
+ const acc=state.answered?Math.round(state.correct/state.answered*100):0;
+ const stats=[["📈","Level",state.level],["💎","XP",state.xp],["🎯","Soal",state.answered],["✅","Akurasi",acc+"%"],["📚","Materi",state.collection.length],["🔥","Streak",state.streak],["🎮","Permainan",state.totalGames],["⭐","Bintang",state.stars]];
+ document.getElementById("parentGrid").innerHTML=stats.map(x=>`<div class="stat"><div style="font-size:25px">${x[0]}</div><b>${x[2]}</b><small>${x[1]}</small></div>`).join("");
+ const weak=Object.entries(state.catStats).sort((a,b)=>(b[1].wrong-b[1].correct)-(a[1].wrong-a[1].correct))[0];
+ document.getElementById("weakText").textContent=weak&&weak[1].wrong>weak[1].correct?`Coba ulang kategori ${weak[0]} dengan santai. Game akan memberi latihan kategori ini lebih sering.`:"Teruskan dengan Main Acak agar kategori latihan berganti-ganti.";
+ showView("parent")
+}
+function showProfile(){modal("👤","PROFIL",`${state.name} • Level ${state.level} • ⭐ ${state.stars}<br><br>Progress disimpan di perangkat ini.`)}
+function showSettings(){document.getElementById("settingSound").textContent=state.sound?"Aktif":"Nonaktif";document.getElementById("settingMotion").textContent=state.motion?"Aktif":"Nonaktif";document.getElementById("settingSoundIcon").textContent=state.sound?"🔊":"🔇";showView("settings")}
+function toggleSound(){state.sound=!state.sound;saveState();updateHeader();if(document.getElementById("settings").classList.contains("active"))showSettings();if(state.sound)sound("click")}
+function toggleMotion(){state.motion=!state.motion;saveState();document.getElementById("settingMotion").textContent=state.motion?"Aktif":"Nonaktif";document.getElementById("settingSound").textContent=state.sound?"Aktif":"Nonaktif"}
+function resetGame(){if(confirm("Reset semua progress HIDA di perangkat ini?")){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}}
+
+/* Audio */
+function audioReady(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return true}catch(e){return false}}
+function sound(kind){
+ if(!state.sound||!audioReady())return;
+ const map={click:[520,.05,"sine"],correct:[660,.09,"sine"],wrong:[180,.12,"sawtooth"],level:[440,.1,"triangle"],reward:[780,.08,"triangle"]};let m=map[kind]||map.click;
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=m[2];o.frequency.value=m[0];g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.12,audioCtx.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+m[1]);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+m[1]+.02)
+}
+function speak(text){try{if("speechSynthesis"in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang="id-ID";u.rate=.88;speechSynthesis.speak(u)}}catch(e){}}
+
+/* Modal / effects */
+function modal(icon,title,text){document.getElementById("modalIcon").textContent=icon;document.getElementById("modalTitle").textContent=title;document.getElementById("modalText").innerHTML=text;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove("show"),1800)}
+function confetti(){
+ if(!state.motion)return;const c=document.getElementById("confetti"),ctx=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;let ps=[];
+ for(let i=0;i<55;i++)ps.push({x:c.width/2,y:c.height*.35,vx:(Math.random()-.5)*10,vy:-Math.random()*9-2,s:4+Math.random()*5,l:65+Math.random()*25});
+ (function draw(){ctx.clearRect(0,0,c.width,c.height);let live=false;ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.28;p.l--;if(p.l>0)live=true;ctx.fillStyle=["#0b8f72","#f6b73c","#4c8dff","#ee82a5","#8c72e8"][Math.floor(Math.random()*5)];ctx.fillRect(p.x,p.y,p.s,p.s)});if(live)requestAnimationFrame(draw);else ctx.clearRect(0,0,c.width,c.height)})()
+}
+
+/* Safe first-touch audio initialization */
+document.addEventListener("pointerdown",()=>{if(state.sound)audioReady()},{once:true});
+document.addEventListener("visibilitychange",()=>saveState());
+window.addEventListener("beforeunload",()=>saveState());
+init();
+</script>
+</body>
+</html>
